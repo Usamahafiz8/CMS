@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/*
+ * Brand accent, carried over from the Zedro marketing site's palette
+ * (--c-red / --c-red2 / --c-red3) and remapped onto a Tailwind-style
+ * 50-800 scale so it drops in wherever `blue-*` used to be the primary
+ * accent (nav, links, primary buttons, focus rings). Left distinct from
+ * the existing `red-*` danger scale used on delete/destructive actions.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-brand-50: #fdf1f2;
+  --color-brand-100: #fbe1e2;
+  --color-brand-300: #ef9ea3;
+  --color-brand-500: #d8434b;
+  --color-brand-600: #c1272d;
+  --color-brand-700: #a01e24;
+  --color-brand-800: #7f181d;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* ── Entrance + hover motion, adapted from the Zedro site ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease both;
+}
+
+@layer components {
+  .cms-card-hover {
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .cms-card-hover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-brand-600), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .cms-card-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-brand-300);
+    box-shadow: 0 12px 24px -12px rgba(193, 39, 45, 0.25);
+  }
+  .cms-card-hover:hover::before {
+    transform: scaleX(1);
+  }
+}
+
+/*
+ * This app ships one deliberately light design (white cards, slate text)
+ * throughout — every component hardcodes those colors. Tailwind's preflight
+ * makes form controls inherit `color` from their ancestors, so without this,
+ * a user with a dark OS theme gets near-white input text on a plain white
+ * input background (unreadable). Pinning form controls to explicit colors
+ * here, in one place, is more reliable than adding the same override to
+ * every input/select/textarea across ~30 files.
+ */
+@layer base {
+  input,
+  select,
+  textarea {
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+  }
+}
