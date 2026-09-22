@@ -4,6 +4,7 @@ import LoadingSpinner from "@/components/Common/LoadingSpinner";
 import Toast from "@/components/Common/Toast";
 import AttendanceForm from "@/components/Forms/AttendanceForm";
 import AttendanceTable from "@/components/Tables/AttendanceTable";
+import AttendanceLogTable from "@/components/Tables/AttendanceLogTable";
 import { useClasses, useClassStudents } from "@/hooks/useClass";
 import { useBulkMarkAttendance, useClassAttendanceReport } from "@/hooks/useAttendance";
 import { useToast } from "@/hooks/useToast";
@@ -80,11 +81,25 @@ export default function AttendancePage() {
           </div>
 
           <div>
-            <h2 className="mb-4 text-base font-semibold text-slate-900">Attendance Report</h2>
+            <h2 className="mb-4 text-base font-semibold text-slate-900">Attendance Summary</h2>
+            <p className="mb-3 text-sm text-slate-500">Totals across every date this class has been marked.</p>
             {report.isLoading ? (
               <LoadingSpinner label="Loading report..." />
             ) : (
               <AttendanceTable rows={report.data?.byStudent ?? []} />
+            )}
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-base font-semibold text-slate-900">Attendance Log</h2>
+            <p className="mb-3 text-sm text-slate-500">Every recorded entry, newest first — which date each mark was for.</p>
+            {report.isLoading ? (
+              <LoadingSpinner label="Loading log..." />
+            ) : (
+              <AttendanceLogTable
+                records={report.data?.records ?? []}
+                studentsById={Object.fromEntries((classStudents.data ?? []).map((s) => [s.id, s]))}
+              />
             )}
           </div>
         </div>

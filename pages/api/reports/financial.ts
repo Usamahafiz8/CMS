@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 
 async function getFinancialReport(req: NextApiRequest, res: NextApiResponse) {
   const fees = await prisma.fee.findMany();
@@ -27,4 +27,4 @@ async function getFinancialReport(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export default methodRouter({ GET: withAuth(getFinancialReport, ["ADMIN"]) });
+export default methodRouter({ GET: withPermission(getFinancialReport, "reports.viewFinancial") });

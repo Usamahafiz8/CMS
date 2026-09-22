@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, getId, withAuth } from "@/lib/api-handler";
+import { methodRouter, getId, withAuth, withPermission } from "@/lib/api-handler";
 import { NotFoundError } from "@/lib/errors";
 import { classUpdateSchema } from "@/lib/validators";
 
@@ -41,6 +41,6 @@ async function deleteClass(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getClass),
-  PUT: withAuth(updateClass, ["ADMIN"]),
-  DELETE: withAuth(deleteClass, ["ADMIN"]),
+  PUT: withPermission(updateClass, "classes.edit"),
+  DELETE: withPermission(deleteClass, "classes.delete"),
 });

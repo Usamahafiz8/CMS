@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import type { Message, User } from "@/generated/prisma/client";
+import type { Message } from "@/generated/prisma/client";
+import type { PublicUser } from "@/lib/types";
 
-type MessageRow = Message & { sender: User; recipient: User };
+export type MessageRow = Message & { sender: PublicUser; recipient: PublicUser };
 
 export function useConversation(withUserId: string | undefined) {
   return useQuery({

@@ -24,7 +24,10 @@ async function sendMessage(req: NextApiRequest, res: NextApiResponse, user: Toke
       studentId: input.studentId || null,
       conversationId: conversationIdFor(user.sub, input.recipientId),
     },
-    include: { sender: true, recipient: true },
+    include: {
+      sender: { select: { id: true, firstName: true, lastName: true, email: true } },
+      recipient: { select: { id: true, firstName: true, lastName: true, email: true } },
+    },
   });
 
   await createNotification(

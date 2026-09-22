@@ -26,7 +26,10 @@ async function getMessages(req: NextApiRequest, res: NextApiResponse, user: Toke
 
   const messages = await prisma.message.findMany({
     where: { conversationId: resolvedConversationId },
-    include: { sender: true, recipient: true },
+    include: {
+      sender: { select: { id: true, firstName: true, lastName: true, email: true } },
+      recipient: { select: { id: true, firstName: true, lastName: true, email: true } },
+    },
     orderBy: { createdAt: "asc" },
   });
 

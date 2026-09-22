@@ -1,12 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, getId, withAuth } from "@/lib/api-handler";
+import { methodRouter, getId, withAuth, withPermission } from "@/lib/api-handler";
 import { NotFoundError } from "@/lib/errors";
 import { announcementUpdateSchema } from "@/lib/validators";
 
 async function getAnnouncement(req: NextApiRequest, res: NextApiResponse) {
   const id = getId(req);
-  const announcement = await prisma.announcement.findUnique({ where: { id }, include: { createdBy: true } });
+  const announcement = await prisma.announcement.findUnique({
+    where: { id },
+    include: { createdBy: { select: { id: true, firstName: true, lastName: true, email: true } } },
+  });
   if (!announcement) throw new NotFoundError("Announcement");
   res.status(200).json(announcement);
 }
@@ -34,6 +37,6 @@ async function deleteAnnouncement(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getAnnouncement),
-  PUT: withAuth(updateAnnouncement, ["ADMIN", "TEACHER"]),
-  DELETE: withAuth(deleteAnnouncement, ["ADMIN", "TEACHER"]),
+  PUT: withPermission(updateAnnouncement, "announcements.manage"),
+  DELETE: withPermission(deleteAnnouncement, "announcements.manage"),
 });

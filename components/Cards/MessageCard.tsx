@@ -1,6 +1,4 @@
-import type { Message, User } from "@/generated/prisma/client";
-
-type MessageRow = Message & { sender: User };
+import type { MessageRow } from "@/hooks/useMessages";
 
 interface MessageCardProps {
   message: MessageRow;

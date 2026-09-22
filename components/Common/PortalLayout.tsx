@@ -4,11 +4,10 @@ import { useRouter } from "next/router";
 import Navbar from "@/components/Common/Navbar";
 import LoadingSpinner from "@/components/Common/LoadingSpinner";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
-import type { Role } from "@/generated/prisma/client";
 
 interface PortalLayoutProps {
   title: string;
-  role: Role;
+  role: string;
   navItems: { label: string; href: string }[];
   children: ReactNode;
 }

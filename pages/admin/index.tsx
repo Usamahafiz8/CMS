@@ -18,7 +18,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout title="Admin Dashboard">
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <StatCard label="Students" value={students.data?.pagination.total ?? "—"} href="/admin/students" />
         <StatCard label="Teachers" value={teachers.data?.pagination.total ?? "—"} href="/admin/teachers" />
         <StatCard label="Classes" value={classes.data?.pagination.total ?? "—"} href="/admin/classes" />

@@ -11,7 +11,11 @@ export const registerSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required"),
   lastName: z.string().trim().min(1, "Last name is required"),
   phone: z.string().trim().optional().or(z.literal("")),
-  role: z.enum(["ADMIN", "TEACHER", "STUDENT", "PARENT"]),
+  // Public self-registration is limited to non-admin roles — ADMIN/
+  // SUPER_ADMIN/custom staff roles must be created by an existing admin via
+  // POST /api/users so account creation can't be used to self-grant
+  // administrative access.
+  role: z.enum(["TEACHER", "STUDENT", "PARENT"]),
   // Required only for STUDENT/TEACHER — links this new login to the
   // profile record an admin already created via Module 2.
   rollNumber: z.string().trim().optional(),
@@ -30,6 +34,48 @@ export const changePasswordSchema = z.object({
 
 export const linkChildSchema = z.object({
   rollNumber: z.string().trim().min(1, "Roll number is required"),
+});
+
+// ============================================
+// USERS / ROLES / PERMISSIONS (RBAC)
+// ============================================
+export const userCreateSchema = z.object({
+  email: z.string().trim().toLowerCase().email("Invalid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  firstName: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().min(1, "Last name is required"),
+  phone: z.string().trim().optional().or(z.literal("")),
+  roleId: z.string().trim().min(1, "Role is required"),
+  status: status.optional(),
+  // Optional — links this account to a profile an admin already created,
+  // same as public self-registration.
+  rollNumber: z.string().trim().optional(),
+  employeeId: z.string().trim().optional(),
+});
+
+export const userUpdateSchema = z.object({
+  firstName: z.string().trim().min(1).optional(),
+  lastName: z.string().trim().min(1).optional(),
+  phone: z.string().trim().optional().or(z.literal("")),
+  roleId: z.string().trim().min(1).optional(),
+  status: status.optional(),
+});
+
+export const adminResetPasswordSchema = z.object({
+  userId: z.string().trim().min(1, "userId is required"),
+  newPassword: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export const roleCreateSchema = z.object({
+  name: z.string().trim().min(1, "Role name is required"),
+  description: z.string().trim().optional().or(z.literal("")),
+  permissionKeys: z.array(z.string().trim().min(1)).default([]),
+});
+
+export const roleUpdateSchema = z.object({
+  name: z.string().trim().min(1).optional(),
+  description: z.string().trim().optional().or(z.literal("")),
+  permissionKeys: z.array(z.string().trim().min(1)).optional(),
 });
 
 // ============================================
@@ -236,13 +282,21 @@ export const assignSubstituteSchema = z.object({
 // COMMUNICATION
 // ============================================
 const priority = z.enum(["HIGH", "MEDIUM", "LOW"]);
-const role = z.enum(["ADMIN", "TEACHER", "STUDENT", "PARENT"]);
 
 export const announcementCreateSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
   content: z.string().trim().min(1, "Content is required"),
   priority: priority.default("MEDIUM"),
-  targetRole: role.optional(),
+  // A Role.key (e.g. "ADMIN"), or empty/omitted to target everyone. The
+  // "Everyone" option in the form submits "" rather than leaving the field
+  // out, so that has to normalize to undefined here rather than fail
+  // validation.
+  targetRole: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((value) => (value ? value : undefined)),
 });
 
 export const announcementUpdateSchema = announcementCreateSchema.partial();

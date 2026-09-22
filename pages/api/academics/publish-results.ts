@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { publishResultsSchema } from "@/lib/validators";
 import { NotFoundError } from "@/lib/errors";
 
@@ -18,4 +18,4 @@ async function publishResults(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ success: true, publishedCount: result.count });
 }
 
-export default methodRouter({ POST: withAuth(publishResults, ["ADMIN"]) });
+export default methodRouter({ POST: withPermission(publishResults, "marks.publish") });

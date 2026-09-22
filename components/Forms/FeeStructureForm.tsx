@@ -46,7 +46,7 @@ export default function FeeStructureForm({ onSubmit, isSubmitting = false }: Fee
         {errors.feeType && <p className={errorClass}>{errors.feeType.message}</p>}
       </div>
       <div>
-        <label className={labelClass}>Amount (₹)</label>
+        <label className={labelClass}>Amount (Rs)</label>
         <input type="number" min={0} step="0.01" className={inputClass} {...register("amount")} />
         {errors.amount && <p className={errorClass}>{errors.amount.message}</p>}
       </div>

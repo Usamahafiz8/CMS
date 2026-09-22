@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import Navbar from "@/components/Common/Navbar";
 import Sidebar from "@/components/Common/Sidebar";
 import LoadingSpinner from "@/components/Common/LoadingSpinner";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { isAdminPortalRole } from "@/lib/roles";
 
 interface AdminLayoutProps {
   title: string;
@@ -10,7 +13,18 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ title, children }: AdminLayoutProps) {
-  const { user, isAuthorized } = useRequireAuth(["ADMIN"]);
+  const router = useRouter();
+  // No fixed role list here: ADMIN, SUPER_ADMIN, and any custom (staff)
+  // role all use this portal — access to individual pages/actions within it
+  // is controlled by permission, not by which role the account holds.
+  const { user, isAuthorized: hasSession } = useRequireAuth();
+  const isAuthorized = hasSession && !!user && isAdminPortalRole(user.role.key);
+
+  useEffect(() => {
+    if (hasSession && user && !isAdminPortalRole(user.role.key)) {
+      router.replace("/auth/login");
+    }
+  }, [hasSession, user, router]);
 
   if (!isAuthorized || !user) {
     return (

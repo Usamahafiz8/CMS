@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 
 async function getOutstandingReport(req: NextApiRequest, res: NextApiResponse) {
   const today = new Date();
@@ -27,4 +27,4 @@ async function getOutstandingReport(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export default methodRouter({ GET: withAuth(getOutstandingReport, ["ADMIN"]) });
+export default methodRouter({ GET: withPermission(getOutstandingReport, "fees.viewReports") });

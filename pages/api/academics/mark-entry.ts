@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { markEntrySchema } from "@/lib/validators";
 import { calculatePercentage, calculateGrade } from "@/lib/calculations";
 import { NotFoundError } from "@/lib/errors";
@@ -64,4 +64,4 @@ async function enterMark(req: NextApiRequest, res: NextApiResponse, user: TokenP
   res.status(200).json(mark);
 }
 
-export default methodRouter({ POST: withAuth(enterMark, ["ADMIN", "TEACHER"]) });
+export default methodRouter({ POST: withPermission(enterMark, "marks.enter") });

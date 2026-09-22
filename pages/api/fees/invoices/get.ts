@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { methodRouter, withAuth } from "@/lib/api-handler";
 import { invoicesQuerySchema } from "@/lib/validators";
 import { assertCanViewStudent } from "@/lib/permissions";
+import { isFullAccessRole } from "@/lib/roles";
 import { ApiError } from "@/lib/errors";
 import type { TokenPayload } from "@/lib/jwt";
 import type { Prisma } from "@/generated/prisma/client";
@@ -14,7 +15,7 @@ async function getInvoices(req: NextApiRequest, res: NextApiResponse, user: Toke
     throw new ApiError(400, "studentId is required");
   }
   if (studentId) await assertCanViewStudent(user, studentId);
-  if (classId && user.role !== "ADMIN" && user.role !== "TEACHER") {
+  if (classId && !isFullAccessRole(user.role) && user.role !== "TEACHER") {
     throw new ApiError(403, "You do not have permission to view class invoices");
   }
 

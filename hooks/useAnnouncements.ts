@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
-import type { Paginated } from "@/lib/types";
-import type { Announcement, User } from "@/generated/prisma/client";
+import type { Paginated, PublicUser } from "@/lib/types";
+import type { Announcement } from "@/generated/prisma/client";
 import type { AnnouncementInput } from "@/components/Forms/AnnouncementForm";
 
-type AnnouncementRow = Announcement & { createdBy: User };
+export type AnnouncementRow = Announcement & { createdBy: PublicUser };
 
 export function useAnnouncements(page = 1, pageSize = 10) {
   return useQuery({

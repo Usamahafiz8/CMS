@@ -4,6 +4,7 @@ import { methodRouter, withAuth } from "@/lib/api-handler";
 import { attendanceReportQuerySchema } from "@/lib/validators";
 import { ApiError, NotFoundError } from "@/lib/errors";
 import { assertCanViewStudent } from "@/lib/permissions";
+import { isFullAccessRole } from "@/lib/roles";
 import type { TokenPayload } from "@/lib/jwt";
 import type { AttendanceStatus } from "@/generated/prisma/client";
 
@@ -37,7 +38,7 @@ async function getReport(req: NextApiRequest, res: NextApiResponse, user: TokenP
   }
 
   if (teacherId) {
-    if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+    if (!isFullAccessRole(user.role) && user.role !== "TEACHER") {
       throw new ApiError(403, "You do not have permission to view teacher attendance");
     }
     const records = await prisma.attendanceRecord.findMany({
@@ -49,7 +50,7 @@ async function getReport(req: NextApiRequest, res: NextApiResponse, user: TokenP
   }
 
   if (classId) {
-    if (user.role !== "ADMIN" && user.role !== "TEACHER") {
+    if (!isFullAccessRole(user.role) && user.role !== "TEACHER") {
       throw new ApiError(403, "You do not have permission to view class attendance");
     }
     const classItem = await prisma.class.findUnique({

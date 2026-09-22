@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withAuth, withPermission } from "@/lib/api-handler";
 import { NotFoundError } from "@/lib/errors";
 import { assignTeacherSchema } from "@/lib/validators";
 
@@ -46,5 +46,5 @@ async function assignTeacher(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getClassTeachers),
-  POST: withAuth(assignTeacher, ["ADMIN"]),
+  POST: withPermission(assignTeacher, "classes.edit"),
 });

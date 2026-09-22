@@ -69,6 +69,7 @@ export default function AnnouncementForm({ onSubmit, isSubmitting = false }: Ann
             <option value="STUDENT">Students</option>
             <option value="PARENT">Parents</option>
           </select>
+          {errors.targetRole && <p className={errorClass}>{errors.targetRole.message}</p>}
         </div>
       </div>
       <div className="flex justify-end pt-2">

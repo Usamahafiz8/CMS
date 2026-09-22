@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withAuth, withPermission } from "@/lib/api-handler";
 import { subjectCreateSchema, paginationSchema } from "@/lib/validators";
 import type { Paginated } from "@/lib/types";
 
@@ -32,5 +32,5 @@ async function createSubject(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getSubjects),
-  POST: withAuth(createSubject, ["ADMIN"]),
+  POST: withPermission(createSubject, "subjects.create"),
 });

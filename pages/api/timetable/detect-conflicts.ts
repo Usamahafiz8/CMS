@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { detectConflictsSchema } from "@/lib/validators";
 import { findTimetableConflicts } from "@/lib/timetable";
 
@@ -9,4 +9,4 @@ async function detectConflicts(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ hasConflicts: conflicts.length > 0, conflicts });
 }
 
-export default methodRouter({ POST: withAuth(detectConflicts, ["ADMIN"]) });
+export default methodRouter({ POST: withPermission(detectConflicts, "timetable.manage") });

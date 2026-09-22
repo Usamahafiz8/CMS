@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import type { Role } from "@/generated/prisma/client";
 
 function getSecret(): string {
   const secret = process.env.JWT_SECRET;
@@ -12,10 +11,15 @@ function getSecret(): string {
 const ACCESS_TOKEN_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "15m";
 const REFRESH_TOKEN_EXPIRES_IN = "7d";
 
+// `role` is the Role.key (e.g. "ADMIN", or a custom role's key) rather than
+// a fixed enum, so custom roles created at runtime work everywhere a role
+// check is done. `roleId` is carried alongside it so permission checks can
+// look up the role's current permissions without a second lookup by key.
 export interface TokenPayload {
   sub: string;
   email: string;
-  role: Role;
+  role: string;
+  roleId: string;
 }
 
 export function signAccessToken(payload: TokenPayload): string {
@@ -35,12 +39,13 @@ export function verifyToken(token: string, expectedType: "access" | "refresh"): 
     type?: string;
     sub?: string;
     email?: string;
-    role?: Role;
+    role?: string;
+    roleId?: string;
   };
 
-  if (decoded.type !== expectedType || !decoded.sub || !decoded.email || !decoded.role) {
+  if (decoded.type !== expectedType || !decoded.sub || !decoded.email || !decoded.role || !decoded.roleId) {
     throw new Error("Invalid token");
   }
 
-  return { sub: decoded.sub, email: decoded.email, role: decoded.role };
+  return { sub: decoded.sub, email: decoded.email, role: decoded.role, roleId: decoded.roleId };
 }

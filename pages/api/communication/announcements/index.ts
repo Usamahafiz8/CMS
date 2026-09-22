@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withAuth, withPermission } from "@/lib/api-handler";
 import { announcementCreateSchema, paginationSchema } from "@/lib/validators";
 import type { Paginated } from "@/lib/types";
 import type { TokenPayload } from "@/lib/jwt";
@@ -11,7 +11,7 @@ async function getAnnouncements(req: NextApiRequest, res: NextApiResponse, user:
   const [data, total] = await prisma.$transaction([
     prisma.announcement.findMany({
       where: { OR: [{ targetRole: null }, { targetRole: user.role }] },
-      include: { createdBy: true },
+      include: { createdBy: { select: { id: true, firstName: true, lastName: true, email: true } } },
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * pageSize,
       take: pageSize,
@@ -34,7 +34,7 @@ async function createAnnouncement(req: NextApiRequest, res: NextApiResponse, use
 
   const announcement = await prisma.announcement.create({
     data: { ...input, createdById: user.sub },
-    include: { createdBy: true },
+    include: { createdBy: { select: { id: true, firstName: true, lastName: true, email: true } } },
   });
 
   res.status(201).json(announcement);
@@ -42,5 +42,5 @@ async function createAnnouncement(req: NextApiRequest, res: NextApiResponse, use
 
 export default methodRouter({
   GET: withAuth(getAnnouncements),
-  POST: withAuth(createAnnouncement, ["ADMIN", "TEACHER"]),
+  POST: withPermission(createAnnouncement, "announcements.manage"),
 });

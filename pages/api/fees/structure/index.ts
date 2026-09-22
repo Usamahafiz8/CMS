@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withAuth, withPermission } from "@/lib/api-handler";
 import { feeStructureCreateSchema } from "@/lib/validators";
 
 async function getFeeStructures(req: NextApiRequest, res: NextApiResponse) {
@@ -16,5 +16,5 @@ async function createFeeStructure(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getFeeStructures),
-  POST: withAuth(createFeeStructure, ["ADMIN"]),
+  POST: withPermission(createFeeStructure, "fees.manage"),
 });

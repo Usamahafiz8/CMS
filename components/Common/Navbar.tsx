@@ -16,7 +16,7 @@ export default function Navbar({ user }: NavbarProps) {
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 shadow-sm">
-      <Link href={homeRouteForRole(user.role)} className="flex items-center gap-2.5">
+      <Link href={homeRouteForRole(user.role.key)} className="flex items-center gap-2.5">
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
           S
         </span>
@@ -25,7 +25,7 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="flex items-center gap-3">
         <InstallPWAButton />
         <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
-          {user.role}
+          {user.role.name}
         </span>
         <div className="flex items-center gap-2 border-l border-slate-200 pl-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-700">

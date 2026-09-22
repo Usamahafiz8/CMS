@@ -16,12 +16,12 @@ async function refresh(req: NextApiRequest, res: NextApiResponse) {
     throw new ApiError(401, "Invalid or expired session");
   }
 
-  const user = await prisma.user.findUnique({ where: { id: payload.sub } });
+  const user = await prisma.user.findUnique({ where: { id: payload.sub }, include: { role: true } });
   if (!user || user.status !== "ACTIVE") {
     throw new ApiError(401, "Account no longer active");
   }
 
-  const newPayload = { sub: user.id, email: user.email, role: user.role };
+  const newPayload = { sub: user.id, email: user.email, role: user.role.key, roleId: user.roleId };
   const accessToken = signAccessToken(newPayload);
   const refreshToken = signRefreshToken(newPayload);
   setAuthCookies(res, accessToken, refreshToken);

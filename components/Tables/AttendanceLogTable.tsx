@@ -1,0 +1,66 @@
+import type { AttendanceRecord, Student } from "@/generated/prisma/client";
+
+interface AttendanceLogTableProps {
+  records: AttendanceRecord[];
+  studentsById: Record<string, Student>;
+}
+
+const STATUS_STYLES: Record<string, string> = {
+  PRESENT: "bg-green-100 text-green-700",
+  ABSENT: "bg-red-100 text-red-700",
+  LEAVE: "bg-amber-100 text-amber-700",
+};
+
+// The per-day record of who was marked what, so "which date was this
+// attendance for" has an actual answer — the summary table above this one
+// only shows rolled-up totals across every date, with no date column of
+// its own.
+export default function AttendanceLogTable({ records, studentsById }: AttendanceLogTableProps) {
+  if (records.length === 0) {
+    return (
+      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+        No attendance has been marked yet.
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto rounded-md border border-slate-200">
+      <table className="min-w-full divide-y divide-slate-200 text-sm">
+        <thead className="bg-slate-50">
+          <tr>
+            <th className="px-4 py-3 text-left font-semibold text-slate-600">Date</th>
+            <th className="px-4 py-3 text-left font-semibold text-slate-600">Student</th>
+            <th className="px-4 py-3 text-left font-semibold text-slate-600">Status</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100 bg-white">
+          {records.map((record) => {
+            const student = record.studentId ? studentsById[record.studentId] : undefined;
+            return (
+              <tr key={record.id} className="transition-colors hover:bg-slate-50">
+                <td className="px-4 py-3 text-slate-600">
+                  {new Date(record.date).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </td>
+                <td className="px-4 py-3 font-medium text-slate-900">
+                  {student ? `${student.firstName} ${student.lastName}` : "—"}
+                </td>
+                <td className="px-4 py-3">
+                  <span
+                    className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[record.status] ?? "bg-slate-100 text-slate-600"}`}
+                  >
+                    {record.status}
+                  </span>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}

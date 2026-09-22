@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { markTeacherAttendanceSchema } from "@/lib/validators";
 import { NotFoundError } from "@/lib/errors";
 
@@ -28,4 +28,4 @@ async function markTeacher(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(record);
 }
 
-export default methodRouter({ POST: withAuth(markTeacher, ["ADMIN"]) });
+export default methodRouter({ POST: withPermission(markTeacher, "attendance.manage") });

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { attendanceReportRequestSchema } from "@/lib/validators";
 
 async function getAttendanceReport(req: NextApiRequest, res: NextApiResponse) {
@@ -39,4 +39,4 @@ async function getAttendanceReport(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ data: byClass });
 }
 
-export default methodRouter({ GET: withAuth(getAttendanceReport, ["ADMIN", "TEACHER"]) });
+export default methodRouter({ GET: withPermission(getAttendanceReport, "reports.view") });

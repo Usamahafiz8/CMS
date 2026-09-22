@@ -7,7 +7,7 @@ import { useRegister, type RegisterInput } from "@/hooks/useAuth";
 import { ApiClientError } from "@/lib/api-client";
 import { homeRouteForRole } from "@/lib/roles";
 
-const ROLES: RegisterInput["role"][] = ["ADMIN", "TEACHER", "STUDENT", "PARENT"];
+const ROLES: RegisterInput["role"][] = ["TEACHER", "STUDENT", "PARENT"];
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function RegisterPage() {
     }
 
     registerUser.mutate(values, {
-      onSuccess: (user) => router.push(homeRouteForRole(user.role)),
+      onSuccess: (user) => router.push(homeRouteForRole(user.role.key)),
       onError: (error) => {
         setServerError(error instanceof ApiClientError ? error.message : "Failed to register");
       },

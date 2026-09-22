@@ -1,6 +1,4 @@
-import type { Announcement, User } from "@/generated/prisma/client";
-
-type AnnouncementRow = Announcement & { createdBy: User };
+import type { AnnouncementRow } from "@/hooks/useAnnouncements";
 
 interface AnnouncementCardProps {
   announcement: AnnouncementRow;

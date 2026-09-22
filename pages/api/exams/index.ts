@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withAuth, withPermission } from "@/lib/api-handler";
 import { examCreateSchema, paginationSchema } from "@/lib/validators";
 import { NotFoundError } from "@/lib/errors";
 import type { Paginated } from "@/lib/types";
@@ -49,5 +49,5 @@ async function createExam(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getExams),
-  POST: withAuth(createExam, ["ADMIN"]),
+  POST: withPermission(createExam, "exams.create"),
 });

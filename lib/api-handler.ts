@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ZodError } from "zod";
-import { Prisma, type Role } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 import { ApiError } from "@/lib/errors";
 import { getCurrentUser } from "@/lib/auth";
+import { requirePermission } from "@/lib/permissions";
 import type { TokenPayload } from "@/lib/jwt";
 
 type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void;
@@ -12,12 +13,29 @@ type AuthHandler = (
   user: TokenPayload,
 ) => Promise<void> | void;
 
-export function withAuth(handler: AuthHandler, allowedRoles?: Role[]): Handler {
+// Gates a route by role key. Reserved for identity-only checks — "this
+// endpoint is only for a user's own STUDENT/TEACHER/PARENT profile" — where
+// there's no finer-grained capability to check. Operational, admin-tier
+// actions should use `withPermission` instead so custom roles and
+// SUPER_ADMIN are handled automatically.
+export function withAuth(handler: AuthHandler, allowedRoles?: string[]): Handler {
   return async (req, res) => {
     const user = getCurrentUser(req);
     if (allowedRoles && !allowedRoles.includes(user.role)) {
       throw new ApiError(403, "You do not have permission to perform this action");
     }
+    await handler(req, res, user);
+  };
+}
+
+// Gates a route by permission key(s) instead of a hardcoded role list. The
+// user is authorized if their role holds at least one of the given
+// permissions — this is the reusable authorization guard every
+// admin-capability route should use.
+export function withPermission(handler: AuthHandler, permission: string | string[]): Handler {
+  return async (req, res) => {
+    const user = getCurrentUser(req);
+    await requirePermission(user, permission);
     await handler(req, res, user);
   };
 }

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { academicReportRequestSchema } from "@/lib/validators";
 import { NotFoundError } from "@/lib/errors";
 
@@ -28,4 +28,4 @@ async function getAcademicReport(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ exam, bySubject });
 }
 
-export default methodRouter({ GET: withAuth(getAcademicReport, ["ADMIN", "TEACHER"]) });
+export default methodRouter({ GET: withPermission(getAcademicReport, "reports.view") });

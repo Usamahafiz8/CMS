@@ -5,6 +5,7 @@ import { registerSchema } from "@/lib/validators";
 import { hashPassword } from "@/lib/password";
 import { signAccessToken, signRefreshToken } from "@/lib/jwt";
 import { setAuthCookies } from "@/lib/cookies";
+import { getUserPermissionKeys } from "@/lib/permissions";
 import { ConflictError, ApiError } from "@/lib/errors";
 
 async function register(req: NextApiRequest, res: NextApiResponse) {
@@ -35,6 +36,9 @@ async function register(req: NextApiRequest, res: NextApiResponse) {
     teacherToLink = teacher;
   }
 
+  const role = await prisma.role.findUnique({ where: { key: input.role } });
+  if (!role) throw new ApiError(500, `Role ${input.role} is not configured`);
+
   const passwordHash = await hashPassword(input.password);
 
   const user = await prisma.user.create({
@@ -44,22 +48,22 @@ async function register(req: NextApiRequest, res: NextApiResponse) {
       firstName: input.firstName,
       lastName: input.lastName,
       phone: input.phone || null,
-      role: input.role,
+      roleId: role.id,
       ...(input.role === "PARENT" ? { parent: { create: {} } } : {}),
-      ...(input.role === "ADMIN" ? { admin: { create: {} } } : {}),
       ...(studentToLink ? { student: { connect: { id: studentToLink.id } } } : {}),
       ...(teacherToLink ? { teacher: { connect: { id: teacherToLink.id } } } : {}),
     },
   });
 
-  const payload = { sub: user.id, email: user.email, role: user.role };
+  const payload = { sub: user.id, email: user.email, role: role.key, roleId: role.id };
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
   setAuthCookies(res, accessToken, refreshToken);
 
+  const permissions = await getUserPermissionKeys(role.id);
   const { password: _password, ...safeUser } = user;
   void _password;
-  res.status(201).json(safeUser);
+  res.status(201).json({ ...safeUser, role, permissions: Array.from(permissions) });
 }
 
 export default methodRouter({ POST: register });

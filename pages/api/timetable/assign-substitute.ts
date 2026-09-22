@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, withAuth } from "@/lib/api-handler";
+import { methodRouter, withPermission } from "@/lib/api-handler";
 import { assignSubstituteSchema } from "@/lib/validators";
 import { NotFoundError } from "@/lib/errors";
 
@@ -26,4 +26,4 @@ async function assignSubstitute(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(updated);
 }
 
-export default methodRouter({ POST: withAuth(assignSubstitute, ["ADMIN"]) });
+export default methodRouter({ POST: withPermission(assignSubstitute, "timetable.manage") });

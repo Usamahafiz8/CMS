@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/db";
-import { methodRouter, getId, withAuth } from "@/lib/api-handler";
+import { methodRouter, getId, withAuth, withPermission } from "@/lib/api-handler";
 import { NotFoundError } from "@/lib/errors";
 import { subjectUpdateSchema } from "@/lib/validators";
 
@@ -37,6 +37,6 @@ async function deleteSubject(req: NextApiRequest, res: NextApiResponse) {
 
 export default methodRouter({
   GET: withAuth(getSubject),
-  PUT: withAuth(updateSubject, ["ADMIN"]),
-  DELETE: withAuth(deleteSubject, ["ADMIN"]),
+  PUT: withPermission(updateSubject, "subjects.edit"),
+  DELETE: withPermission(deleteSubject, "subjects.delete"),
 });

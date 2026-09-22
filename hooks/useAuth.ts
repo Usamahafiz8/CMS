@@ -2,7 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import type { User } from "@/generated/prisma/client";
 
-export type SafeUser = Omit<User, "password">;
+export interface RoleSummary {
+  id: string;
+  key: string;
+  name: string;
+}
+
+export type SafeUser = Omit<User, "password" | "roleId"> & {
+  role: RoleSummary;
+  permissions: string[];
+};
 
 export interface RegisterInput {
   email: string;
@@ -10,7 +19,9 @@ export interface RegisterInput {
   firstName: string;
   lastName: string;
   phone?: string;
-  role: "ADMIN" | "TEACHER" | "STUDENT" | "PARENT";
+  // ADMIN/SUPER_ADMIN/custom staff roles aren't self-registerable — an
+  // existing admin creates those accounts via the user management screen.
+  role: "TEACHER" | "STUDENT" | "PARENT";
   rollNumber?: string;
   employeeId?: string;
 }

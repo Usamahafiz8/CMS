@@ -22,7 +22,8 @@ model User {
   phone      String?
   address    String?
   profilePic String?
-  role       Role     @default(STUDENT)
+  roleId     String
+  role       Role     @relation(fields: [roleId], references: [id])
   status     Status   @default(ACTIVE)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -32,10 +33,12 @@ model User {
   teacher          Teacher?
   parent           Parent?
   admin            Admin?
-  sentMessages     Message[]       @relation("SentMessages")
-  receivedMessages Message[]       @relation("ReceivedMessages")
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
   notifications    Notification[]
   announcements    Announcement[]
+
+  @@index([roleId])
 }
 
 // ============================================
@@ -115,12 +118,59 @@ model Parent {
 // ADMIN MODEL
 // ============================================
 model Admin {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// ROLE / PERMISSION MODELS (RBAC)
+// ============================================
+// A Role is a named, assignable set of Permissions. ADMIN, TEACHER, STUDENT,
+// PARENT and SUPER_ADMIN are seeded as system roles (isSystem = true) and
+// mirror the app's original fixed Role enum by using the same `key` values,
+// so existing role-key comparisons throughout the codebase keep working.
+// Admins/Super Admins can additionally create custom roles at runtime.
+model Role {
   id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  permissions String[] // Admin-level permissions
+  key         String   @unique // stable machine key, e.g. "ADMIN" or "LIBRARIAN"
+  name        String // display name
+  description String?
+  isSystem    Boolean  @default(false) // seeded role; cannot be renamed away or deleted
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  users           User[]
+  rolePermissions RolePermission[]
+}
+
+// A Permission represents one concrete system capability, named
+// "<module>.<action>" (e.g. "students.create"). The catalog is fixed by the
+// application (lib/permissions.ts) and seeded via migration — only the
+// mapping of permissions to roles is editable at runtime.
+model Permission {
+  id          String   @id @default(cuid())
+  key         String   @unique // e.g. "students.create"
+  module      String
+  action      String
+  description String?
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
+  @@index([permissionId])
 }
 
 // ============================================
@@ -363,7 +413,7 @@ model Announcement {
   title      String
   content    String
   priority   Priority // HIGH, MEDIUM, LOW
-  targetRole Role? // If null, visible to all
+  targetRole String? // Role.key to target one role's audience; null = visible to all
 
   // Relations
   createdById String
@@ -486,13 +536,6 @@ model ExamInvigilator {
 // ============================================
 // ENUMS
 // ============================================
-enum Role {
-  ADMIN
-  TEACHER
-  STUDENT
-  PARENT
-}
-
 enum Status {
   ACTIVE
   INACTIVE

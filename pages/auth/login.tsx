@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     login.mutate(values, {
       onSuccess: (user) => {
-        const next = typeof router.query.next === "string" ? router.query.next : homeRouteForRole(user.role);
+        const next = typeof router.query.next === "string" ? router.query.next : homeRouteForRole(user.role.key);
         router.push(next);
       },
       onError: (error) => {
