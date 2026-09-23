@@ -32,7 +32,7 @@ export default function ClassesPage() {
         <button
           type="button"
           onClick={() => setShowAddModal(true)}
-          className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+          className="w-full rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 sm:w-auto sm:py-2"
         >
           + Add Class
         </button>

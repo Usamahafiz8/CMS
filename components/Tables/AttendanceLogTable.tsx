@@ -25,42 +25,74 @@ export default function AttendanceLogTable({ records, studentsById }: Attendance
   }
 
   return (
-    <div className="overflow-x-auto rounded-md border border-slate-200">
-      <table className="min-w-full divide-y divide-slate-200 text-sm">
-        <thead className="bg-slate-50">
-          <tr>
-            <th className="px-4 py-3 text-left font-semibold text-slate-600">Date</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-600">Student</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-600">Status</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-100 bg-white">
-          {records.map((record) => {
-            const student = record.studentId ? studentsById[record.studentId] : undefined;
-            return (
-              <tr key={record.id} className="transition-colors hover:bg-slate-50">
-                <td className="px-4 py-3 text-slate-600">
+    <>
+      <div className="hidden overflow-x-auto rounded-md border border-slate-200 sm:block">
+        <table className="min-w-full divide-y divide-slate-200 text-sm">
+          <thead className="bg-slate-50">
+            <tr>
+              <th className="px-4 py-3 text-left font-semibold text-slate-600">Date</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-600">Student</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-600">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100 bg-white">
+            {records.map((record) => {
+              const student = record.studentId ? studentsById[record.studentId] : undefined;
+              return (
+                <tr key={record.id} className="transition-colors hover:bg-slate-50">
+                  <td className="px-4 py-3 text-slate-600">
+                    {new Date(record.date).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td className="px-4 py-3 font-medium text-slate-900">
+                    {student ? `${student.firstName} ${student.lastName}` : "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[record.status] ?? "bg-slate-100 text-slate-600"}`}
+                    >
+                      {record.status}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex flex-col gap-2 sm:hidden">
+        {records.map((record) => {
+          const student = record.studentId ? studentsById[record.studentId] : undefined;
+          return (
+            <div
+              key={record.id}
+              className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm"
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-slate-900">
+                  {student ? `${student.firstName} ${student.lastName}` : "—"}
+                </p>
+                <p className="mt-0.5 text-xs text-slate-500">
                   {new Date(record.date).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
                   })}
-                </td>
-                <td className="px-4 py-3 font-medium text-slate-900">
-                  {student ? `${student.firstName} ${student.lastName}` : "—"}
-                </td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[record.status] ?? "bg-slate-100 text-slate-600"}`}
-                  >
-                    {record.status}
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                </p>
+              </div>
+              <span
+                className={`shrink-0 rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[record.status] ?? "bg-slate-100 text-slate-600"}`}
+              >
+                {record.status}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }

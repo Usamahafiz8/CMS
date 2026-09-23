@@ -1,4 +1,5 @@
 import Link from "next/link";
+import InstallPWAButton from "@/components/Common/InstallPWAButton";
 
 export default function Home() {
   return (
@@ -27,6 +28,9 @@ export default function Home() {
         >
           Register
         </Link>
+      </div>
+      <div className="animate-fade-in-up relative">
+        <InstallPWAButton />
       </div>
     </div>
   );

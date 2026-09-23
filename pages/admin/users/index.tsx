@@ -30,13 +30,13 @@ export default function UsersPage() {
 
   return (
     <AdminLayout title="Users">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-slate-500">Manage accounts and assign roles across the system.</p>
         {can("users.create") && (
           <button
             type="button"
             onClick={() => setShowAddModal(true)}
-            className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+            className="w-full rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 sm:w-auto sm:py-2"
           >
             + Add User
           </button>

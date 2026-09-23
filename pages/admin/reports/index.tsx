@@ -36,13 +36,13 @@ export default function ReportsPage() {
       </div>
 
       {tab === "attendance" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-6">
-          <div className="mb-4 flex items-center justify-between">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-base font-semibold text-slate-900">Attendance by Class</h2>
             <button
               type="button"
               onClick={() => exportReport.mutate({ type: "attendance" })}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 sm:w-auto sm:py-1.5"
             >
               Export CSV
             </button>
@@ -56,14 +56,14 @@ export default function ReportsPage() {
       )}
 
       {tab === "academic" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-6">
-          <div className="mb-4 flex items-center justify-between">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-base font-semibold text-slate-900">Academic Performance by Subject</h2>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <select
                 value={examId}
                 onChange={(e) => setExamId(e.target.value)}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+                className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-base sm:w-auto sm:py-2 sm:text-sm"
               >
                 <option value="">Select an exam...</option>
                 {exams.data?.data.map((e) => (
@@ -76,7 +76,7 @@ export default function ReportsPage() {
                 type="button"
                 disabled={!examId}
                 onClick={() => exportReport.mutate({ type: "academic", examId })}
-                className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 sm:w-auto sm:py-1.5"
               >
                 Export CSV
               </button>
@@ -93,13 +93,13 @@ export default function ReportsPage() {
       )}
 
       {tab === "financial" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-6">
-          <div className="mb-4 flex items-center justify-between">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-base font-semibold text-slate-900">Financial Summary</h2>
             <button
               type="button"
               onClick={() => exportReport.mutate({ type: "financial" })}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 sm:w-auto sm:py-1.5"
             >
               Export CSV
             </button>

@@ -10,7 +10,7 @@ interface TeacherFormProps {
 }
 
 const inputClass =
-  "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500";
+  "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2.5 text-base shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 sm:py-2 sm:text-sm";
 const labelClass = "block text-sm font-medium text-slate-700";
 const errorClass = "mt-1 text-xs text-red-600";
 
@@ -86,7 +86,7 @@ export default function TeacherForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-md bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+          className="w-full rounded-md bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50 sm:w-auto sm:py-2"
         >
           {isSubmitting ? "Saving..." : submitLabel}
         </button>

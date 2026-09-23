@@ -26,7 +26,7 @@ export default function MessagingPanel() {
               <button
                 type="button"
                 onClick={() => setRecipientId(u.id)}
-                className={`block w-full px-4 py-2 text-left text-sm ${
+                className={`block min-h-11 w-full px-4 py-2.5 text-left text-sm ${
                   recipientId === u.id ? "bg-brand-50 text-brand-700" : "text-slate-600 hover:bg-slate-50"
                 }`}
               >
@@ -38,11 +38,11 @@ export default function MessagingPanel() {
         </ul>
       </div>
 
-      <div className="flex-1 rounded-md border border-slate-200 bg-white p-4">
+      <div className="flex-1 rounded-md border border-slate-200 bg-white p-3 sm:p-4">
         {!recipientId ? (
           <p className="text-sm text-slate-500">Select a contact to start messaging.</p>
         ) : (
-          <div className="flex h-96 flex-col">
+          <div className="flex h-[60vh] flex-col sm:h-96">
             <div className="flex-1 space-y-2 overflow-y-auto">
               {conversation.isLoading ? (
                 <LoadingSpinner label="Loading messages..." />
@@ -57,7 +57,7 @@ export default function MessagingPanel() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm"
+                className="min-h-11 flex-1 rounded-md border border-slate-300 px-3 py-2.5 text-base sm:py-2 sm:text-sm"
               />
               <button
                 type="button"
@@ -68,7 +68,7 @@ export default function MessagingPanel() {
                     { onSuccess: () => setDraft("") },
                   );
                 }}
-                className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+                className="min-h-11 shrink-0 rounded-md bg-brand-600 px-4 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
               >
                 Send
               </button>

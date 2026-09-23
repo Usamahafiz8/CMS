@@ -28,7 +28,7 @@ export default function RoleDetailPage() {
       {isLoading || !role ? (
         <LoadingSpinner label="Loading role..." />
       ) : (
-        <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-6">
+        <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
           {isSuperAdmin && (
             <p className="mb-4 rounded-md bg-slate-50 px-3 py-2 text-sm text-slate-600">
               The Super Admin role always holds every permission and can&apos;t be modified.

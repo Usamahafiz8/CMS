@@ -24,7 +24,7 @@ export default function UserDetailPage() {
       {isLoading || !user ? (
         <LoadingSpinner label="Loading user..." />
       ) : (
-        <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-6">
+        <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
           <UserForm
             isEdit
             defaultValues={{

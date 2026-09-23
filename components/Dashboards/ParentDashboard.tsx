@@ -16,7 +16,7 @@ export default function ParentDashboard() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="rounded-lg border border-slate-200 bg-white p-6">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
         <h2 className="mb-4 text-base font-semibold text-slate-900">My Children</h2>
         {(parent?.children.length ?? 0) === 0 ? (
           <p className="mb-4 text-sm text-slate-500">No children linked to your account yet.</p>

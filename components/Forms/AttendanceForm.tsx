@@ -51,18 +51,18 @@ export default function AttendanceForm({ students, onSubmit, isSubmitting = fals
 
       <div className="divide-y divide-slate-100 rounded-md border border-slate-200">
         {students.map((student) => (
-          <div key={student.id} className="flex items-center justify-between gap-4 px-4 py-3">
+          <div key={student.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <span className="text-sm font-medium text-slate-900">
               {student.firstName} {student.lastName}{" "}
               <span className="text-slate-400">({student.rollNumber})</span>
             </span>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-3 gap-2 sm:flex">
               {STATUS_OPTIONS.map((status) => (
                 <button
                   key={status}
                   type="button"
                   onClick={() => setStatus(student.id, status)}
-                  className={`rounded-md border px-3 py-1 text-xs font-medium ${
+                  className={`min-h-9 rounded-md border px-3 py-1 text-xs font-medium ${
                     statuses[student.id] === status
                       ? STATUS_STYLES[status]
                       : "border-slate-200 text-slate-400 hover:bg-slate-50"
@@ -82,7 +82,7 @@ export default function AttendanceForm({ students, onSubmit, isSubmitting = fals
         onClick={() =>
           onSubmit(students.map((s) => ({ studentId: s.id, status: statuses[s.id] ?? "PRESENT" })))
         }
-        className="self-end rounded-md bg-brand-600 px-5 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+        className="w-full rounded-md bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50 sm:w-auto sm:self-end sm:py-2"
       >
         {isSubmitting ? "Saving..." : "Save Attendance"}
       </button>

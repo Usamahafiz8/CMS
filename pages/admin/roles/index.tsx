@@ -25,13 +25,13 @@ export default function RolesPage() {
 
   return (
     <AdminLayout title="Roles">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-slate-500">Define custom roles and control which permissions each one grants.</p>
         {can("roles.create") && (
           <button
             type="button"
             onClick={() => setShowAddModal(true)}
-            className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+            className="w-full rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 sm:w-auto sm:py-2"
           >
             + Create Role
           </button>

@@ -37,30 +37,30 @@ export default function FeesPage() {
 
   return (
     <AdminLayout title="Fee Management">
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-slate-200 bg-white p-5">
-          <p className="text-sm font-medium text-slate-500">Total Outstanding</p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+          <p className="text-xs font-medium text-slate-500 sm:text-sm">Total Outstanding</p>
+          <p className="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">
             {formatCurrency(outstanding.data?.summary.totalOutstanding ?? 0)}
           </p>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-5">
-          <p className="text-sm font-medium text-slate-500">Unpaid Invoices</p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{outstanding.data?.summary.count ?? 0}</p>
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+          <p className="text-xs font-medium text-slate-500 sm:text-sm">Unpaid Invoices</p>
+          <p className="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">{outstanding.data?.summary.count ?? 0}</p>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-5">
-          <p className="text-sm font-medium text-slate-500">Overdue</p>
-          <p className="mt-1 text-2xl font-bold text-red-600">{outstanding.data?.summary.overdueCount ?? 0}</p>
+        <div className="col-span-2 rounded-lg border border-slate-200 bg-white p-4 sm:col-span-1 sm:p-5">
+          <p className="text-xs font-medium text-slate-500 sm:text-sm">Overdue</p>
+          <p className="mt-1 text-xl font-bold text-red-600 sm:text-2xl">{outstanding.data?.summary.overdueCount ?? 0}</p>
         </div>
       </div>
 
-      <div className="mb-6 rounded-lg border border-slate-200 bg-white p-6">
-        <div className="mb-3 flex items-center justify-between">
+      <div className="mb-6 rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-base font-semibold text-slate-900">Fee Structures</h2>
           <button
             type="button"
             onClick={() => setShowAddModal(true)}
-            className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+            className="w-full rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 sm:w-auto sm:py-2"
           >
             + New Fee Structure
           </button>
@@ -75,8 +75,12 @@ export default function FeesPage() {
           ))}
         </ul>
 
-        <div className="flex flex-wrap items-end gap-2">
-          <select value={feeStructureId} onChange={(e) => setFeeStructureId(e.target.value)} className="rounded-md border border-slate-300 px-3 py-2 text-sm">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end">
+          <select
+            value={feeStructureId}
+            onChange={(e) => setFeeStructureId(e.target.value)}
+            className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-base sm:w-auto sm:py-2 sm:text-sm"
+          >
             <option value="">Select a fee structure...</option>
             {structures.data?.map((s) => (
               <option key={s.id} value={s.id}>
@@ -84,11 +88,19 @@ export default function FeesPage() {
               </option>
             ))}
           </select>
-          <select value={targetType} onChange={(e) => setTargetType(e.target.value as "class" | "student")} className="rounded-md border border-slate-300 px-3 py-2 text-sm">
+          <select
+            value={targetType}
+            onChange={(e) => setTargetType(e.target.value as "class" | "student")}
+            className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-base sm:w-auto sm:py-2 sm:text-sm"
+          >
             <option value="class">Whole Class</option>
             <option value="student">Single Student</option>
           </select>
-          <select value={targetId} onChange={(e) => setTargetId(e.target.value)} className="rounded-md border border-slate-300 px-3 py-2 text-sm">
+          <select
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+            className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-base sm:w-auto sm:py-2 sm:text-sm"
+          >
             <option value="">{targetType === "class" ? "Select a class..." : "Select a student..."}</option>
             {targetType === "class"
               ? classes.data?.data.map((c) => (
@@ -118,7 +130,7 @@ export default function FeesPage() {
                 },
               );
             }}
-            className="rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50"
+            className="w-full rounded-md bg-green-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50 sm:w-auto sm:py-2"
           >
             Generate Invoices
           </button>

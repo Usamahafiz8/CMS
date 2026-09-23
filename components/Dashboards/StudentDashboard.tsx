@@ -13,7 +13,7 @@ export default function StudentDashboard() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <StatCard label="Roll Number" value={student?.rollNumber ?? "—"} />
         <StatCard label="Class" value={currentClass ? `${currentClass.name} - ${currentClass.section}` : "—"} />
         <StatCard label="Attendance" value={`${attendance.data?.summary.percentage ?? 0}%`} href="/student/attendance" />

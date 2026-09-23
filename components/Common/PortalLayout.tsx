@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Navbar from "@/components/Common/Navbar";
 import LoadingSpinner from "@/components/Common/LoadingSpinner";
+import NavIcon from "@/components/Common/NavIcons";
+import BottomTabBar from "@/components/Common/BottomTabBar";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 interface PortalLayoutProps {
@@ -26,9 +28,12 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
     );
   }
 
+  const homeHref = navItems[0]?.href ?? "/";
+  const tabItems = navItems.slice(0, 4);
+
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar user={user} onMenuClick={() => setIsMenuOpen((open) => !open)} />
+      <Navbar user={user} />
       <div className="flex flex-1">
         {isMenuOpen && (
           <div
@@ -38,14 +43,18 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
           />
         )}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-60 shrink-0 transform overflow-y-auto border-r border-slate-200 bg-white transition-transform duration-200 ease-in-out md:static md:z-auto md:w-60 md:translate-x-0 md:transform-none ${
-            isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          className={`fixed inset-x-0 bottom-0 z-40 max-h-[75vh] w-full transform overflow-y-auto rounded-t-2xl border-t border-slate-200 bg-white shadow-2xl transition-transform duration-200 ease-out md:static md:inset-auto md:z-auto md:h-auto md:max-h-none md:w-60 md:shrink-0 md:translate-y-0 md:transform-none md:overflow-y-auto md:rounded-none md:border-t-0 md:border-r md:shadow-none ${
+            isMenuOpen ? "translate-y-0" : "translate-y-full"
           }`}
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
+          <div className="flex justify-center pt-2.5 pb-1 md:hidden">
+            <span className="h-1.5 w-10 rounded-full bg-slate-200" />
+          </div>
           <nav className="flex flex-col gap-0.5 p-4">
             {navItems.map((item) => {
               const isActive =
-                item.href === navItems[0].href
+                item.href === homeHref
                   ? router.pathname === item.href
                   : router.pathname.startsWith(item.href);
               return (
@@ -53,23 +62,25 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`rounded-md border-l-2 px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-3 rounded-md border-l-2 px-3 py-2.5 text-sm font-medium transition-colors md:py-2 ${
                     isActive
                       ? "border-brand-600 bg-brand-50 text-brand-700"
                       : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
+                  <NavIcon label={item.label} className="h-4.5 w-4.5 shrink-0" />
                   {item.label}
                 </Link>
               );
             })}
           </nav>
         </aside>
-        <main className="flex-1 p-4 md:p-8">
-          <h1 className="font-display mb-6 text-2xl font-bold text-slate-900">{title}</h1>
+        <main className="flex-1 p-4 pb-24 sm:p-6 md:p-8 md:pb-8">
+          <h1 className="font-display mb-4 text-xl font-bold text-slate-900 sm:mb-6 sm:text-2xl">{title}</h1>
           <div className="animate-fade-in-up">{children}</div>
         </main>
       </div>
+      <BottomTabBar items={tabItems} homeHref={homeHref} onMoreClick={() => setIsMenuOpen(true)} isMoreOpen={isMenuOpen} />
     </div>
   );
 }

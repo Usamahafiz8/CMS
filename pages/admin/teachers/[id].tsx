@@ -24,7 +24,7 @@ export default function TeacherDetailPage() {
       {isLoading || !teacher ? (
         <LoadingSpinner label="Loading teacher..." />
       ) : (
-        <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-6">
+        <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
           <TeacherForm
             defaultValues={{
               ...teacher,

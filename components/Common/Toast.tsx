@@ -16,7 +16,7 @@ export default function Toast({ message, variant = "success", onDismiss }: Toast
 
   return createPortal(
     <div
-      className={`animate-fade-in-up fixed bottom-6 right-6 z-50 flex items-center gap-4 rounded-md border px-4 py-3 shadow-lg ${colors}`}
+      className={`animate-fade-in-up fixed inset-x-4 bottom-20 z-50 flex items-center justify-between gap-4 rounded-lg border px-4 py-3 shadow-lg sm:inset-x-auto sm:right-6 sm:bottom-6 sm:justify-start ${colors}`}
       role="alert"
     >
       <span className="text-sm font-medium">{message}</span>

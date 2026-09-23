@@ -37,11 +37,15 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar user={user} onMenuClick={() => setIsMenuOpen((open) => !open)} />
+      <Navbar user={user} />
       <div className="flex flex-1">
-        <Sidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-        <main className="flex-1 p-4 md:p-8">
-          <h1 className="font-display mb-6 text-2xl font-bold text-slate-900">{title}</h1>
+        <Sidebar
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onOpenMore={() => setIsMenuOpen(true)}
+        />
+        <main className="flex-1 p-4 pb-24 sm:p-6 md:p-8 md:pb-8">
+          <h1 className="font-display mb-4 text-xl font-bold text-slate-900 sm:mb-6 sm:text-2xl">{title}</h1>
           <div className="animate-fade-in-up">{children}</div>
         </main>
       </div>
