@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Navbar from "@/components/Common/Navbar";
@@ -15,6 +16,7 @@ interface PortalLayoutProps {
 export default function PortalLayout({ title, role, navItems, children }: PortalLayoutProps) {
   const { user, isAuthorized } = useRequireAuth([role]);
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (!isAuthorized || !user) {
     return (
@@ -26,9 +28,20 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar user={user} />
+      <Navbar user={user} onMenuClick={() => setIsMenuOpen((open) => !open)} />
       <div className="flex flex-1">
-        <aside className="hidden w-60 shrink-0 border-r border-slate-200 bg-white md:block">
+        {isMenuOpen && (
+          <div
+            aria-hidden
+            onClick={() => setIsMenuOpen(false)}
+            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          />
+        )}
+        <aside
+          className={`fixed inset-y-0 left-0 z-40 w-60 shrink-0 transform overflow-y-auto border-r border-slate-200 bg-white transition-transform duration-200 ease-in-out md:static md:z-auto md:w-60 md:translate-x-0 md:transform-none ${
+            isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
           <nav className="flex flex-col gap-0.5 p-4">
             {navItems.map((item) => {
               const isActive =
@@ -39,6 +52,7 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
                   className={`rounded-md border-l-2 px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
                       ? "border-brand-600 bg-brand-50 text-brand-700"

@@ -25,7 +25,9 @@ export default function TimetableTable({ slots }: TimetableTableProps) {
       <table className="min-w-full divide-y divide-slate-200 text-sm">
         <thead className="bg-slate-50">
           <tr>
-            <th className="px-4 py-3 text-left font-semibold text-slate-600">Period</th>
+            <th className="sticky left-0 z-10 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-600">
+              Period
+            </th>
             {days.map((day) => (
               <th key={day} className="px-4 py-3 text-left font-semibold text-slate-600">
                 {DAY_LABELS[day]}
@@ -36,7 +38,9 @@ export default function TimetableTable({ slots }: TimetableTableProps) {
         <tbody className="divide-y divide-slate-100 bg-white">
           {periods.map((period) => (
             <tr key={period}>
-              <td className="px-4 py-3 font-medium text-slate-900">Period {period}</td>
+              <td className="sticky left-0 z-10 bg-white px-4 py-3 font-medium text-slate-900">
+                Period {period}
+              </td>
               {days.map((day) => {
                 const slot = slots.find((s) => s.dayOfWeek === day && s.periodNumber === period);
                 return (

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Navbar from "@/components/Common/Navbar";
 import Sidebar from "@/components/Common/Sidebar";
@@ -19,6 +19,7 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
   // is controlled by permission, not by which role the account holds.
   const { user, isAuthorized: hasSession } = useRequireAuth();
   const isAuthorized = hasSession && !!user && isAdminPortalRole(user.role.key);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (hasSession && user && !isAdminPortalRole(user.role.key)) {
@@ -36,9 +37,9 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar user={user} />
+      <Navbar user={user} onMenuClick={() => setIsMenuOpen((open) => !open)} />
       <div className="flex flex-1">
-        <Sidebar />
+        <Sidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <main className="flex-1 p-4 md:p-8">
           <h1 className="font-display mb-6 text-2xl font-bold text-slate-900">{title}</h1>
           <div className="animate-fade-in-up">{children}</div>

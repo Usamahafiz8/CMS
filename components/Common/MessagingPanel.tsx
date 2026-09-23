@@ -15,8 +15,8 @@ export default function MessagingPanel() {
   const sendMessage = useSendMessage();
 
   return (
-    <div className="flex gap-6">
-      <div className="w-64 shrink-0 rounded-md border border-slate-200 bg-white">
+    <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+      <div className="w-full shrink-0 rounded-md border border-slate-200 bg-white md:w-64">
         <div className="border-b border-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
           Contacts
         </div>

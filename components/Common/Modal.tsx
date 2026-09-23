@@ -13,7 +13,7 @@ export default function Modal({ open, title, onClose, children }: ModalProps) {
 
   return createPortal(
     <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/40 p-4 py-10">
-      <div className="animate-fade-in-up w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="animate-fade-in-up flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg bg-white p-4 shadow-xl sm:p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
           <button
@@ -25,7 +25,7 @@ export default function Modal({ open, title, onClose, children }: ModalProps) {
             ✕
           </button>
         </div>
-        {children}
+        <div className="overflow-y-auto">{children}</div>
       </div>
     </div>,
     document.body,

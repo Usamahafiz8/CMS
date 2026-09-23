@@ -58,7 +58,7 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={submit} className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-slate-700">First Name</label>
               <input

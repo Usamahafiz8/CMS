@@ -51,7 +51,7 @@ export default function AnnouncementForm({ onSubmit, isSubmitting = false }: Ann
         <textarea rows={4} className={inputClass} {...register("content")} />
         {errors.content && <p className={errorClass}>{errors.content.message}</p>}
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Priority</label>
           <select className={inputClass} {...register("priority")}>
