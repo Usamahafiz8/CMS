@@ -1,5 +1,6 @@
 import AdminLayout from "@/components/Common/AdminLayout";
 import StatCard from "@/components/Dashboards/StatCard";
+import SchoolCard from "@/components/Dashboards/SchoolCard";
 import EnrollmentChart from "@/components/Charts/EnrollmentChart";
 import LoadingSpinner from "@/components/Common/LoadingSpinner";
 import { useStudents } from "@/hooks/useStudent";
@@ -18,6 +19,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout title="Admin Dashboard">
+      <SchoolCard />
       <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
         <StatCard label="Students" value={students.data?.pagination.total ?? "—"} href="/admin/students" />
         <StatCard label="Teachers" value={teachers.data?.pagination.total ?? "—"} href="/admin/teachers" />

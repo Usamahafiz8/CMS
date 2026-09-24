@@ -25,3 +25,6 @@ export const PARENT_NAV_ITEMS = [
   { label: "Messages", href: "/parent/messages" },
   { label: "Announcements", href: "/parent/announcements" },
 ];
+
+// Length of the free trial a newly signed-up school gets.
+export const TRIAL_DAYS = 14;

@@ -5,6 +5,7 @@ import { ApiError } from "@/lib/errors";
 import { getCurrentUser } from "@/lib/auth";
 import { requirePermission } from "@/lib/permissions";
 import type { TokenPayload } from "@/lib/jwt";
+import { runWithTenant } from "@/lib/tenant";
 
 type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void;
 type AuthHandler = (
@@ -24,7 +25,7 @@ export function withAuth(handler: AuthHandler, allowedRoles?: string[]): Handler
     if (allowedRoles && !allowedRoles.includes(user.role)) {
       throw new ApiError(403, "You do not have permission to perform this action");
     }
-    await handler(req, res, user);
+    await runWithTenant(user.schoolId, () => handler(req, res, user));
   };
 }
 
@@ -35,8 +36,10 @@ export function withAuth(handler: AuthHandler, allowedRoles?: string[]): Handler
 export function withPermission(handler: AuthHandler, permission: string | string[]): Handler {
   return async (req, res) => {
     const user = getCurrentUser(req);
-    await requirePermission(user, permission);
-    await handler(req, res, user);
+    await runWithTenant(user.schoolId, async () => {
+      await requirePermission(user, permission);
+      await handler(req, res, user);
+    });
   };
 }
 

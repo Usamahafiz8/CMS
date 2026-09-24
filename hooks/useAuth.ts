@@ -24,6 +24,8 @@ export interface RegisterInput {
   role: "TEACHER" | "STUDENT" | "PARENT";
   rollNumber?: string;
   employeeId?: string;
+  // The school's code (its slug), shared by the school admin.
+  schoolCode: string;
 }
 
 export interface LoginInput {
@@ -85,6 +87,28 @@ export function useChangePassword() {
   return useMutation({
     mutationFn: async (input: { currentPassword: string; newPassword: string }) => {
       await apiClient.post("/auth/change-password", input);
+    },
+  });
+}
+
+export interface SchoolSignupInput {
+  schoolName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+// Creates a new school (tenant) on a free trial and signs its owner in.
+export function useSchoolSignup() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: SchoolSignupInput) => {
+      const { data } = await apiClient.post<SafeUser>("/schools/signup", input);
+      return data;
+    },
+    onSuccess: (user) => {
+      queryClient.setQueryData(["auth", "me"], user);
     },
   });
 }

@@ -11,10 +11,29 @@ datasource db {
 }
 
 // ============================================
+// SCHOOL MODEL (SaaS tenant)
+// ============================================
+// Each subscribing school is one tenant. Tenant-owned tables carry a plain
+// `schoolId` column (deliberately not a Prisma relation, so the tenant
+// extension in lib/db.ts can inject it into any create input) and every
+// query made inside an authenticated request is scoped to it automatically.
+model School {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique // "school code" users enter to self-register
+  plan        SubscriptionPlan @default(TRIAL)
+  status      Status           @default(ACTIVE)
+  trialEndsAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+// ============================================
 // USER MODEL (Base for all users)
 // ============================================
 model User {
   id         String   @id @default(cuid())
+  schoolId   String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   email      String   @unique
   password   String // hashed with bcryptjs
   firstName  String
@@ -39,6 +58,7 @@ model User {
   announcements    Announcement[]
 
   @@index([roleId])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -46,9 +66,10 @@ model User {
 // ============================================
 model Student {
   id            String   @id @default(cuid())
+  schoolId      String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   userId        String?  @unique
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  rollNumber    String   @unique
+  rollNumber    String
   firstName     String
   lastName      String
   dateOfBirth   DateTime
@@ -69,6 +90,9 @@ model Student {
   messages          Message[]          @relation("StudentMessages")
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+
+  @@unique([schoolId, rollNumber])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -76,9 +100,10 @@ model Student {
 // ============================================
 model Teacher {
   id             String  @id @default(cuid())
+  schoolId       String  @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   userId         String? @unique
   user           User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  employeeId     String  @unique
+  employeeId     String
   firstName      String
   lastName       String
   phone          String?
@@ -99,6 +124,9 @@ model Teacher {
   messages          Message[]          @relation("TeacherMessages")
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+
+  @@unique([schoolId, employeeId])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -139,11 +167,17 @@ model Role {
   name        String // display name
   description String?
   isSystem    Boolean  @default(false) // seeded role; cannot be renamed away or deleted
+  // null = a system role shared by every school; set = a custom role owned
+  // by one school. System roles are read-only from inside a school, since
+  // editing their permissions would change them for every tenant.
+  schoolId    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   users           User[]
   rolePermissions RolePermission[]
+
+  @@index([schoolId])
 }
 
 // A Permission represents one concrete system capability, named
@@ -178,6 +212,7 @@ model RolePermission {
 // ============================================
 model Class {
   id           String @id @default(cuid())
+  schoolId     String @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   name         String // e.g., "Class 10-A"
   section      String // e.g., "A", "B", "C"
   capacity     Int
@@ -193,17 +228,19 @@ model Class {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
-  @@unique([name, section, academicYear])
+  @@unique([schoolId, name, section, academicYear])
+  @@index([schoolId])
 }
 
 // ============================================
 // SUBJECT MODEL
 // ============================================
 model Subject {
-  id     String @id @default(cuid())
-  name   String
-  code   String @unique
-  status Status @default(ACTIVE)
+  id       String @id @default(cuid())
+  schoolId String @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
+  name     String
+  code     String
+  status   Status @default(ACTIVE)
 
   // Relations
   classes        ClassSubject[]
@@ -214,6 +251,9 @@ model Subject {
   examTimetables ExamTimetable[]
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
+
+  @@unique([schoolId, code])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -221,6 +261,7 @@ model Subject {
 // ============================================
 model AttendanceRecord {
   id        String           @id @default(cuid())
+  schoolId  String           @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   date      DateTime
   status    AttendanceStatus // PRESENT, ABSENT, LEAVE
   remarks   String?
@@ -237,6 +278,7 @@ model AttendanceRecord {
 
   @@unique([studentId, date])
   @@unique([teacherId, date])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -244,6 +286,7 @@ model AttendanceRecord {
 // ============================================
 model Mark {
   id          String  @id @default(cuid())
+  schoolId    String  @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   marks       Float
   totalMarks  Float
   percentage  Float
@@ -265,6 +308,7 @@ model Mark {
   updatedAt DateTime @updatedAt
 
   @@unique([studentId, examId, subjectId])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -272,6 +316,7 @@ model Mark {
 // ============================================
 model Exam {
   id        String   @id @default(cuid())
+  schoolId  String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   name      String // e.g., "Midterm", "Final"
   startDate DateTime
   endDate   DateTime
@@ -287,6 +332,8 @@ model Exam {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([schoolId])
 }
 
 // ============================================
@@ -294,6 +341,7 @@ model Exam {
 // ============================================
 model ExamTimetable {
   id        String   @id @default(cuid())
+  schoolId  String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   date      DateTime
   startTime DateTime
   endTime   DateTime
@@ -309,6 +357,7 @@ model ExamTimetable {
   updatedAt DateTime @updatedAt
 
   @@index([examId, date])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -316,6 +365,7 @@ model ExamTimetable {
 // ============================================
 model TimetableSlot {
   id           String @id @default(cuid())
+  schoolId     String @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   dayOfWeek    Int // 1=Monday, 7=Sunday
   periodNumber Int // 1, 2, 3, etc.
   startTime    String // "9:00"
@@ -335,6 +385,7 @@ model TimetableSlot {
 
   // No two classes in same room at same time
   @@unique([classId, dayOfWeek, periodNumber])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -342,6 +393,7 @@ model TimetableSlot {
 // ============================================
 model Fee {
   id       String        @id @default(cuid())
+  schoolId String        @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   amount   Float
   dueDate  DateTime
   paidDate DateTime?
@@ -359,6 +411,7 @@ model Fee {
   updatedAt DateTime @updatedAt
 
   @@index([studentId, status])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -366,6 +419,7 @@ model Fee {
 // ============================================
 model FeeStructure {
   id           String   @id @default(cuid())
+  schoolId     String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   name         String // e.g., "Tuition Fee - Term 1"
   feeType      String // "Tuition", "Bus", "Uniform", etc.
   amount       Float
@@ -375,15 +429,18 @@ model FeeStructure {
   fees      Fee[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([schoolId])
 }
 
 // ============================================
 // MESSAGE MODEL
 // ============================================
 model Message {
-  id      String  @id @default(cuid())
-  content String
-  isRead  Boolean @default(false)
+  id       String  @id @default(cuid())
+  schoolId String  @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
+  content  String
+  isRead   Boolean @default(false)
 
   // Relations
   senderId String
@@ -403,6 +460,7 @@ model Message {
   updatedAt      DateTime @updatedAt
 
   @@index([conversationId, createdAt])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -410,6 +468,7 @@ model Message {
 // ============================================
 model Announcement {
   id         String   @id @default(cuid())
+  schoolId   String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   title      String
   content    String
   priority   Priority // HIGH, MEDIUM, LOW
@@ -423,17 +482,19 @@ model Announcement {
   updatedAt DateTime @updatedAt
 
   @@index([createdAt])
+  @@index([schoolId])
 }
 
 // ============================================
 // NOTIFICATION MODEL
 // ============================================
 model Notification {
-  id      String           @id @default(cuid())
-  title   String
-  message String
-  isRead  Boolean          @default(false)
-  type    NotificationType
+  id       String           @id @default(cuid())
+  schoolId String           @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
+  title    String
+  message  String
+  isRead   Boolean          @default(false)
+  type     NotificationType
 
   // Relations
   userId String
@@ -443,6 +504,7 @@ model Notification {
   updatedAt DateTime @updatedAt
 
   @@index([userId, createdAt])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -450,6 +512,7 @@ model Notification {
 // ============================================
 model ClassEnrollment {
   id             String   @id @default(cuid())
+  schoolId       String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   enrollmentDate DateTime @default(now())
 
   // Relations
@@ -462,6 +525,7 @@ model ClassEnrollment {
   updatedAt DateTime @updatedAt
 
   @@unique([studentId, classId])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -469,6 +533,7 @@ model ClassEnrollment {
 // ============================================
 model ClassAssignment {
   id             String   @id @default(cuid())
+  schoolId       String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   assignmentDate DateTime @default(now())
 
   // Relations
@@ -481,6 +546,7 @@ model ClassAssignment {
   updatedAt DateTime @updatedAt
 
   @@unique([teacherId, classId])
+  @@index([schoolId])
 }
 
 // ============================================
@@ -488,6 +554,7 @@ model ClassAssignment {
 // ============================================
 model ClassSubject {
   id        String   @id @default(cuid())
+  schoolId  String   @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
   classId   String
   class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
   subjectId String
@@ -495,13 +562,15 @@ model ClassSubject {
   createdAt DateTime @default(now())
 
   @@unique([classId, subjectId])
+  @@index([schoolId])
 }
 
 // ============================================
 // SUBJECT TEACHING MODEL (Junction table)
 // ============================================
 model SubjectTeaching {
-  id String @id @default(cuid())
+  id       String @id @default(cuid())
+  schoolId String @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
 
   // Relations
   teacherId String
@@ -513,13 +582,15 @@ model SubjectTeaching {
   updatedAt DateTime @updatedAt
 
   @@unique([teacherId, subjectId])
+  @@index([schoolId])
 }
 
 // ============================================
 // EXAM INVIGILATOR MODEL (Junction table)
 // ============================================
 model ExamInvigilator {
-  id String @id @default(cuid())
+  id       String @id @default(cuid())
+  schoolId String @default("") // tenant; injected by lib/db.ts, DB CHECK rejects ""
 
   // Relations
   teacherId String
@@ -531,11 +602,18 @@ model ExamInvigilator {
   updatedAt DateTime @updatedAt
 
   @@unique([teacherId, examId])
+  @@index([schoolId])
 }
 
 // ============================================
 // ENUMS
 // ============================================
+enum SubscriptionPlan {
+  TRIAL
+  STARTER
+  PRO
+}
+
 enum Status {
   ACTIVE
   INACTIVE

@@ -11,7 +11,7 @@ async function linkChild(req: NextApiRequest, res: NextApiResponse, user: TokenP
   const parent = await prisma.parent.findUnique({ where: { userId: user.sub } });
   if (!parent) throw new NotFoundError("Parent profile");
 
-  const student = await prisma.student.findUnique({ where: { rollNumber } });
+  const student = await prisma.student.findFirst({ where: { rollNumber } });
   if (!student) throw new NotFoundError("Student with that roll number");
 
   const updated = await prisma.parent.update({

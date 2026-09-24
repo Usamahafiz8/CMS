@@ -4,27 +4,32 @@ import { methodRouter, getId, withPermission } from "@/lib/api-handler";
 import { roleUpdateSchema } from "@/lib/validators";
 import { PERMISSION_KEYS } from "@/lib/permissions";
 import { NotFoundError, ApiError, ConflictError } from "@/lib/errors";
+import type { TokenPayload } from "@/lib/jwt";
 
-const roleSelect = {
-  id: true,
-  key: true,
-  name: true,
-  description: true,
-  isSystem: true,
-  createdAt: true,
-  updatedAt: true,
-  _count: { select: { users: true } },
-  rolePermissions: { select: { permission: { select: { key: true } } } },
-} as const;
+// System roles are shared by every school, so the user count must be
+// filtered to the caller's school (nested counts aren't tenant-scoped).
+function roleSelect(schoolId: string) {
+  return {
+    id: true,
+    key: true,
+    name: true,
+    description: true,
+    isSystem: true,
+    createdAt: true,
+    updatedAt: true,
+    _count: { select: { users: { where: { schoolId } } } },
+    rolePermissions: { select: { permission: { select: { key: true } } } },
+  } as const;
+}
 
-async function getRole(req: NextApiRequest, res: NextApiResponse) {
+async function getRole(req: NextApiRequest, res: NextApiResponse, user: TokenPayload) {
   const id = getId(req);
-  const role = await prisma.role.findUnique({ where: { id }, select: roleSelect });
+  const role = await prisma.role.findUnique({ where: { id }, select: roleSelect(user.schoolId) });
   if (!role) throw new NotFoundError("Role");
   res.status(200).json({ ...role, permissionKeys: role.rolePermissions.map((rp) => rp.permission.key) });
 }
 
-async function updateRole(req: NextApiRequest, res: NextApiResponse) {
+async function updateRole(req: NextApiRequest, res: NextApiResponse, user: TokenPayload) {
   const id = getId(req);
   const input = roleUpdateSchema.parse(req.body);
 
@@ -36,6 +41,12 @@ async function updateRole(req: NextApiRequest, res: NextApiResponse) {
   // system, no matter what other roles get edited or deleted.
   if (role.key === "SUPER_ADMIN") {
     throw new ApiError(403, "The Super Admin role cannot be modified");
+  }
+
+  // System roles are shared by every school on the platform — editing one
+  // would change it for all tenants. Schools customise via their own roles.
+  if (role.isSystem) {
+    throw new ApiError(403, "Built-in roles can't be edited. Create a custom role instead.");
   }
 
   if (input.permissionKeys) {
@@ -63,7 +74,7 @@ async function updateRole(req: NextApiRequest, res: NextApiResponse) {
     }
   });
 
-  const updated = await prisma.role.findUniqueOrThrow({ where: { id }, select: roleSelect });
+  const updated = await prisma.role.findUniqueOrThrow({ where: { id }, select: roleSelect(user.schoolId) });
   res.status(200).json({ ...updated, permissionKeys: updated.rolePermissions.map((rp) => rp.permission.key) });
 }
 

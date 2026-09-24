@@ -18,6 +18,8 @@ export default function RoleDetailPage() {
   const can = useCan();
 
   const isSuperAdmin = role?.key === "SUPER_ADMIN";
+  // Built-in roles are shared by every school on the platform, so they are view-only.
+  const isBuiltIn = role?.isSystem ?? false;
 
   return (
     <AdminLayout title="Edit Role">
@@ -34,8 +36,13 @@ export default function RoleDetailPage() {
               The Super Admin role always holds every permission and can&apos;t be modified.
             </p>
           )}
+          {isBuiltIn && !isSuperAdmin && (
+            <p className="mb-4 rounded-md bg-slate-50 px-3 py-2 text-sm text-slate-600">
+              Built-in roles can&apos;t be edited. Create a custom role to use a different set of permissions.
+            </p>
+          )}
           <RoleForm
-            readOnly={isSuperAdmin || !can("roles.edit")}
+            readOnly={isSuperAdmin || isBuiltIn || !can("roles.edit")}
             defaultValues={{
               name: role.name,
               description: role.description ?? undefined,

@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/lib/db";
+import { basePrisma } from "@/lib/db";
 import { methodRouter } from "@/lib/api-handler";
-import { getRefreshToken, setAuthCookies } from "@/lib/cookies";
-import { verifyToken, signAccessToken, signRefreshToken } from "@/lib/jwt";
+import { getRefreshToken } from "@/lib/cookies";
+import { verifyToken } from "@/lib/jwt";
+import { issueSession, assertSchoolActive } from "@/lib/session";
 import { ApiError } from "@/lib/errors";
 
 async function refresh(req: NextApiRequest, res: NextApiResponse) {
@@ -16,15 +17,13 @@ async function refresh(req: NextApiRequest, res: NextApiResponse) {
     throw new ApiError(401, "Invalid or expired session");
   }
 
-  const user = await prisma.user.findUnique({ where: { id: payload.sub }, include: { role: true } });
+  const user = await basePrisma.user.findUnique({ where: { id: payload.sub }, include: { role: true } });
   if (!user || user.status !== "ACTIVE") {
     throw new ApiError(401, "Account no longer active");
   }
 
-  const newPayload = { sub: user.id, email: user.email, role: user.role.key, roleId: user.roleId };
-  const accessToken = signAccessToken(newPayload);
-  const refreshToken = signRefreshToken(newPayload);
-  setAuthCookies(res, accessToken, refreshToken);
+  await assertSchoolActive(user.schoolId);
+  issueSession(res, user, user.role.key);
 
   res.status(200).json({ success: true });
 }

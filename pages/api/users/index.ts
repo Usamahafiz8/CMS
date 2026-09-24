@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { prisma, basePrisma } from "@/lib/db";
 import { methodRouter, withAuth, withPermission } from "@/lib/api-handler";
 import { userCreateSchema, paginationSchema } from "@/lib/validators";
 import { hashPassword } from "@/lib/password";
@@ -74,7 +74,8 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
   const input = userCreateSchema.parse(req.body);
 
   const [existing, role] = await Promise.all([
-    prisma.user.findUnique({ where: { email: input.email } }),
+    // Emails are unique across all schools, so check unscoped.
+    basePrisma.user.findUnique({ where: { email: input.email } }),
     prisma.role.findUnique({ where: { id: input.roleId } }),
   ]);
   if (existing) throw new ConflictError("An account with this email already exists");
@@ -84,14 +85,14 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
   let teacherToLink: { id: string } | null = null;
 
   if (role.key === "STUDENT" && input.rollNumber) {
-    const student = await prisma.student.findUnique({ where: { rollNumber: input.rollNumber } });
+    const student = await prisma.student.findFirst({ where: { rollNumber: input.rollNumber } });
     if (!student) throw new NotFoundError("Student");
     if (student.userId) throw new ConflictError("This student already has a login account");
     studentToLink = student;
   }
 
   if (role.key === "TEACHER" && input.employeeId) {
-    const teacher = await prisma.teacher.findUnique({ where: { employeeId: input.employeeId } });
+    const teacher = await prisma.teacher.findFirst({ where: { employeeId: input.employeeId } });
     if (!teacher) throw new NotFoundError("Teacher");
     if (teacher.userId) throw new ConflictError("This teacher already has a login account");
     teacherToLink = teacher;

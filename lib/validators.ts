@@ -20,6 +20,19 @@ export const registerSchema = z.object({
   // profile record an admin already created via Module 2.
   rollNumber: z.string().trim().optional(),
   employeeId: z.string().trim().optional(),
+  // The school's slug, shared by the school admin, picks which tenant the
+  // new account joins.
+  schoolCode: z.string().trim().toLowerCase().min(1, "School code is required"),
+});
+
+// Public "Start free trial" signup: creates a new School tenant plus its
+// first ADMIN user in one step.
+export const schoolSignupSchema = z.object({
+  schoolName: z.string().trim().min(2, "School name is required").max(120),
+  firstName: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().min(1, "Last name is required"),
+  email: z.string().trim().toLowerCase().email("Invalid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 export const loginSchema = z.object({

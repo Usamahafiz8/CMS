@@ -89,6 +89,12 @@ export default function LoginPage() {
             Register
           </Link>
         </p>
+        <p className="mt-2 text-center text-sm text-slate-500">
+          New school?{" "}
+          <Link href="/auth/signup" className="font-medium text-brand-600 hover:text-brand-800">
+            Start a free trial
+          </Link>
+        </p>
       </div>
     </div>
   );
