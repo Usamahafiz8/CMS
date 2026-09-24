@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LogoMark } from "@/components/Common/Logo";
 import { useForm } from "react-hook-form";
 import { schoolSignupSchema } from "@/lib/validators";
 import { useSchoolSignup, type SchoolSignupInput } from "@/hooks/useAuth";
@@ -49,6 +50,11 @@ export default function SchoolSignupPage() {
         className="pointer-events-none absolute left-1/2 top-0 h-105 w-180 -translate-x-1/2 -translate-y-1/3 rounded-full bg-brand-600/10 blur-3xl"
       />
       <div className="animate-fade-in-up relative w-full max-w-sm rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+        <div className="mb-4 flex justify-center">
+          <Link href="/" aria-label="Chalkora home">
+            <LogoMark className="h-12 w-12" />
+          </Link>
+        </div>
         <h1 className="font-display text-center text-2xl font-bold text-slate-900">Start your free trial</h1>
         <p className="mb-6 mt-2 text-center text-sm text-slate-500">
           {TRIAL_DAYS} days free. No credit card needed.
@@ -96,7 +102,7 @@ export default function SchoolSignupPage() {
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-500">
-          Already using SchoolHub?{" "}
+          Already using Chalkora?{" "}
           <Link href="/auth/login" className="font-medium text-brand-600 hover:text-brand-800">
             Sign in
           </Link>

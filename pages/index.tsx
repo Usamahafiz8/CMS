@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import InstallPWAButton from "@/components/Common/InstallPWAButton";
+import Logo from "@/components/Common/Logo";
 import { useCurrentUser } from "@/hooks/useAuth";
 import { homeRouteForRole } from "@/lib/roles";
 import { TRIAL_DAYS } from "@/lib/constants";
@@ -126,7 +127,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <Head>
-        <title>SchoolHub — Simple school management software</title>
+        <title>Chalkora — Simple school management software</title>
         <meta
           name="description"
           content="Attendance, marks, timetables, fees and parent communication in one simple app for your whole school."
@@ -136,11 +137,8 @@ export default function Home() {
       {/* Nav */}
       <header className="sticky top-0 z-20 border-b border-slate-100 bg-white/85 backdrop-blur">
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="font-display flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
-              S
-            </span>
-            <span className="font-display text-lg font-bold">SchoolHub</span>
+          <Link href="/" aria-label="Chalkora home">
+            <Logo />
           </Link>
           <div className="hidden items-center gap-8 text-sm text-slate-600 md:flex">
             <a href="#features" className="hover:text-slate-900">Features</a>
@@ -312,7 +310,10 @@ export default function Home() {
 
       <footer className="border-t border-slate-100">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-slate-500 sm:flex-row sm:px-6">
-          <p>© {new Date().getFullYear()} SchoolHub. All rights reserved.</p>
+          <div className="flex items-center gap-3">
+            <Logo size="sm" />
+            <p>© {new Date().getFullYear()} Chalkora</p>
+          </div>
           <div className="flex items-center gap-4">
             <Link href="/auth/login" className="hover:text-slate-900">Sign in</Link>
             <Link href="/auth/register" className="hover:text-slate-900">Join your school</Link>

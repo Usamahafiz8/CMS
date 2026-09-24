@@ -3,7 +3,7 @@ import { AsyncLocalStorage } from "node:async_hooks";
 // ============================================================
 // TENANT CONTEXT
 // ============================================================
-// SchoolHub is multi-tenant: every school is a tenant, and tenant-owned rows
+// Chalkora is multi-tenant: every school is a tenant, and tenant-owned rows
 // carry a `schoolId`. The current request's school is held here for the
 // lifetime of the request (set by withAuth/withPermission in
 // lib/api-handler.ts), and the Prisma extension in lib/db.ts reads it to scope

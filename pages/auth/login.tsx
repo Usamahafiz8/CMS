@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LogoMark } from "@/components/Common/Logo";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/lib/validators";
 import { useLogin, type LoginInput } from "@/hooks/useAuth";
@@ -49,7 +50,12 @@ export default function LoginPage() {
         className="pointer-events-none absolute left-1/2 top-0 h-105 w-180 -translate-x-1/2 -translate-y-1/3 rounded-full bg-brand-600/10 blur-3xl"
       />
       <div className="animate-fade-in-up relative w-full max-w-sm rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
-        <h1 className="font-display mb-6 text-center text-2xl font-bold text-slate-900">Sign in to SchoolHub</h1>
+        <div className="mb-4 flex justify-center">
+          <Link href="/" aria-label="Chalkora home">
+            <LogoMark className="h-12 w-12" />
+          </Link>
+        </div>
+        <h1 className="font-display mb-6 text-center text-2xl font-bold text-slate-900">Sign in to Chalkora</h1>
 
         {serverError && (
           <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{serverError}</p>

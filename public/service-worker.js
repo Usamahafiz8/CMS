@@ -1,5 +1,5 @@
-const CACHE_NAME = "schoolhub-v1";
-const APP_SHELL = ["/", "/manifest.json", "/icon-192.png", "/icon-512.png", "/offline.html"];
+const CACHE_NAME = "chalkora-v1";
+const APP_SHELL = ["/", "/manifest.json", "/icon-192.png", "/icon-512.png", "/logo.svg", "/offline.html"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

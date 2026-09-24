@@ -29,6 +29,6 @@ export async function assertSchoolActive(schoolId: string) {
   const school = await basePrisma.school.findUnique({ where: { id: schoolId }, select: { status: true } });
   if (!school) throw new ApiError(403, "This account's school no longer exists");
   if (school.status !== "ACTIVE") {
-    throw new ApiError(403, "This school's subscription is not active. Contact SchoolHub support.");
+    throw new ApiError(403, "This school's subscription is not active. Contact Chalkora support.");
   }
 }

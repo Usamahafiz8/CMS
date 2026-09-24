@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useLogout } from "@/hooks/useAuth";
 import type { SafeUser } from "@/hooks/useAuth";
 import InstallPWAButton from "@/components/Common/InstallPWAButton";
+import { LogoMark } from "@/components/Common/Logo";
 import { homeRouteForRole } from "@/lib/roles";
 
 interface NavbarProps {
@@ -17,11 +18,9 @@ export default function Navbar({ user }: NavbarProps) {
   return (
     <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-sm sm:h-16 sm:px-6">
       <Link href={homeRouteForRole(user.role.key)} className="flex items-center gap-2.5">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
-          S
-        </span>
-        <span className="font-display text-base font-semibold tracking-tight text-slate-900 sm:text-lg">
-          SchoolHub
+        <LogoMark className="h-8 w-8 shrink-0" />
+        <span className="font-display text-base font-bold tracking-tight text-slate-900 sm:text-lg">
+          Chalk<span className="text-brand-600">ora</span>
         </span>
       </Link>
       <div className="flex items-center gap-2 sm:gap-3">

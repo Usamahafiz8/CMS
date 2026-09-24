@@ -1,6 +1,6 @@
 # School Management CMS - Complete Project Documentation
 
-**Project Name:** SchoolHub CMS  
+**Project Name:** Chalkora (formerly SchoolHub CMS)  
 **Tech Stack:** Next.js 14+ | React | TypeScript | PostgreSQL | Prisma | Tailwind CSS | PWA  
 **Deployment:** Vercel | Docker  
 **Database:** PostgreSQL + Redis  
