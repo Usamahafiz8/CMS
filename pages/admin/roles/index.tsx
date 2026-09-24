@@ -25,7 +25,7 @@ export default function RolesPage() {
 
   return (
     <AdminLayout title="Roles">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+      <div className="mb-3 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-slate-500">Define custom roles and control which permissions each one grants.</p>
         {can("roles.create") && (
           <button

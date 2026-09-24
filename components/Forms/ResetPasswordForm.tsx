@@ -20,7 +20,7 @@ export default function ResetPasswordForm({ onSubmit, isSubmitting = false }: Re
   const submit = handleSubmit((values) => onSubmit(values.newPassword));
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-4">
+    <form onSubmit={submit} className="flex flex-col gap-3 sm:gap-4">
       <div>
         <label className={labelClass}>New Password</label>
         <input

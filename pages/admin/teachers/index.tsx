@@ -33,7 +33,7 @@ export default function TeachersPage() {
 
   return (
     <AdminLayout title="Teachers">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+      <div className="mb-3 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <input
           type="text"
           placeholder="Search by name or employee ID..."

@@ -15,7 +15,7 @@ export default function TeacherTimetablePage() {
       {profileLoading || timetable.isLoading ? (
         <LoadingSpinner label="Loading timetable..." />
       ) : (timetable.data ?? []).length === 0 ? (
-        <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+        <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
           No timetable slots assigned yet.
         </div>
       ) : (

@@ -12,7 +12,7 @@ export default function RoleTable({ roles, onEdit, onDelete }: RoleTableProps) {
 
   if (roles.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+      <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
         No roles found.
       </div>
     );
@@ -24,11 +24,11 @@ export default function RoleTable({ roles, onEdit, onDelete }: RoleTableProps) {
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Role</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Description</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Permissions</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Users</th>
-              <th className="px-4 py-3 text-right font-semibold text-slate-600">Actions</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Role</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Description</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Permissions</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Users</th>
+              <th className="px-4 py-2.5 text-right font-semibold text-slate-600">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
@@ -36,16 +36,16 @@ export default function RoleTable({ roles, onEdit, onDelete }: RoleTableProps) {
               const isSuperAdmin = role.key === "SUPER_ADMIN";
               return (
                 <tr key={role.id} className="transition-colors hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-2.5 font-medium text-slate-900">
                     {role.name}
                     {role.isSystem && (
                       <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">System</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{role.description ?? "—"}</td>
-                  <td className="px-4 py-3 text-slate-600">{role.permissionKeys.length}</td>
-                  <td className="px-4 py-3 text-slate-600">{role._count.users}</td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-2.5 text-slate-600">{role.description ?? "—"}</td>
+                  <td className="px-4 py-2.5 text-slate-600">{role.permissionKeys.length}</td>
+                  <td className="px-4 py-2.5 text-slate-600">{role._count.users}</td>
+                  <td className="px-4 py-2.5 text-right">
                     {can("roles.edit") && !isSuperAdmin && (
                       <button
                         type="button"
@@ -81,7 +81,7 @@ export default function RoleTable({ roles, onEdit, onDelete }: RoleTableProps) {
         </table>
       </div>
 
-      <div className="flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-col gap-2.5 sm:hidden">
         {roles.map((role) => {
           const isSuperAdmin = role.key === "SUPER_ADMIN";
           const canEdit = can("roles.edit") && !isSuperAdmin;
@@ -102,7 +102,7 @@ export default function RoleTable({ roles, onEdit, onDelete }: RoleTableProps) {
                   {role.description && <p className="mt-0.5 text-sm text-slate-500">{role.description}</p>}
                 </div>
               </div>
-              <dl className="mt-3 grid grid-cols-2 gap-y-2 border-t border-slate-100 pt-3 text-sm">
+              <dl className="mt-2.5 grid grid-cols-2 gap-y-2 border-t border-slate-100 pt-2.5 text-sm">
                 <div>
                   <dt className="text-xs text-slate-400">Permissions</dt>
                   <dd className="text-slate-700">{role.permissionKeys.length}</dd>
@@ -113,7 +113,7 @@ export default function RoleTable({ roles, onEdit, onDelete }: RoleTableProps) {
                 </div>
               </dl>
               {(canEdit || canView || canDelete) && (
-                <div className="mt-3 flex gap-2 border-t border-slate-100 pt-3">
+                <div className="mt-2.5 flex gap-2 border-t border-slate-100 pt-2.5">
                   {(canEdit || canView) && (
                     <button
                       type="button"

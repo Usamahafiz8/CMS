@@ -88,7 +88,7 @@ export default function Sidebar({ isOpen = false, onClose, onOpenMore }: Sidebar
               <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 {section.label}
               </p>
-              <div className="flex flex-col gap-0.5">
+              <div className="grid grid-cols-2 gap-2 md:flex md:flex-col md:gap-0.5">
                 {section.items.map((item) => {
                   const isActive =
                     item.href === "/admin"

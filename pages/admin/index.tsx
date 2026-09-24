@@ -18,7 +18,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout title="Admin Dashboard">
-      <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5">
         <StatCard label="Students" value={students.data?.pagination.total ?? "—"} href="/admin/students" />
         <StatCard label="Teachers" value={teachers.data?.pagination.total ?? "—"} href="/admin/teachers" />
         <StatCard label="Classes" value={classes.data?.pagination.total ?? "—"} href="/admin/classes" />
@@ -30,7 +30,7 @@ export default function AdminDashboard() {
         />
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
         <h2 className="mb-4 text-base font-semibold text-slate-900">Enrollment by Class</h2>
         {classes.isLoading ? (
           <LoadingSpinner label="Loading enrollment..." />

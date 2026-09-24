@@ -34,8 +34,8 @@ export default function FeeStructureForm({ onSubmit, isSubmitting = false }: Fee
   });
 
   return (
-    <form onSubmit={submit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <div className="sm:col-span-2">
+    <form onSubmit={submit} className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="sm:col-span-2 lg:col-span-3">
         <label className={labelClass}>Name</label>
         <input className={inputClass} placeholder="Tuition Fee - Term 1" {...register("name")} />
         {errors.name && <p className={errorClass}>{errors.name.message}</p>}
@@ -60,7 +60,7 @@ export default function FeeStructureForm({ onSubmit, isSubmitting = false }: Fee
         <input type="date" className={inputClass} {...register("dueDate")} />
         {errors.dueDate && <p className={errorClass}>{errors.dueDate.message}</p>}
       </div>
-      <div className="sm:col-span-2 flex justify-end pt-2">
+      <div className="sm:col-span-2 flex justify-end pt-2 lg:col-span-3">
         <button
           type="submit"
           disabled={isSubmitting}

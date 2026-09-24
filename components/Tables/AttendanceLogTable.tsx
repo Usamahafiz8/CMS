@@ -18,7 +18,7 @@ const STATUS_STYLES: Record<string, string> = {
 export default function AttendanceLogTable({ records, studentsById }: AttendanceLogTableProps) {
   if (records.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+      <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
         No attendance has been marked yet.
       </div>
     );
@@ -30,9 +30,9 @@ export default function AttendanceLogTable({ records, studentsById }: Attendance
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Date</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Student</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Status</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Date</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Student</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Status</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
@@ -40,17 +40,17 @@ export default function AttendanceLogTable({ records, studentsById }: Attendance
               const student = record.studentId ? studentsById[record.studentId] : undefined;
               return (
                 <tr key={record.id} className="transition-colors hover:bg-slate-50">
-                  <td className="px-4 py-3 text-slate-600">
+                  <td className="px-4 py-2.5 text-slate-600">
                     {new Date(record.date).toLocaleDateString(undefined, {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
                     })}
                   </td>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-2.5 font-medium text-slate-900">
                     {student ? `${student.firstName} ${student.lastName}` : "—"}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-2.5">
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[record.status] ?? "bg-slate-100 text-slate-600"}`}
                     >

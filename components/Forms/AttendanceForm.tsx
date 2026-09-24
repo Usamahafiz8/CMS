@@ -34,7 +34,7 @@ export default function AttendanceForm({ students, onSubmit, isSubmitting = fals
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 sm:gap-4">
       <div className="flex gap-2">
         <span className="text-sm font-medium text-slate-600">Mark all:</span>
         {STATUS_OPTIONS.map((status) => (
@@ -51,7 +51,7 @@ export default function AttendanceForm({ students, onSubmit, isSubmitting = fals
 
       <div className="divide-y divide-slate-100 rounded-md border border-slate-200">
         {students.map((student) => (
-          <div key={student.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div key={student.id} className="flex flex-col gap-2 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <span className="text-sm font-medium text-slate-900">
               {student.firstName} {student.lastName}{" "}
               <span className="text-slate-400">({student.rollNumber})</span>

@@ -52,7 +52,7 @@ export default function CommunicationPage() {
           {announcements.isLoading ? (
             <LoadingSpinner label="Loading announcements..." />
           ) : (announcements.data?.data.length ?? 0) === 0 ? (
-            <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+            <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
               No announcements yet.
             </div>
           ) : (

@@ -11,14 +11,14 @@ export default function TeacherDashboard() {
   const classes = teacher?.classAssignments.map((a) => a.class) ?? [];
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <StatCard label="My Classes" value={classes.length} href="/teacher/timetable" />
         <StatCard label="Employee ID" value={teacher?.employeeId ?? "—"} />
         <StatCard label="Status" value={teacher?.status ?? "—"} />
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
         <h2 className="mb-4 text-base font-semibold text-slate-900">My Classes</h2>
         {classes.length === 0 ? (
           <p className="text-sm text-slate-500">You have not been assigned to any classes yet.</p>

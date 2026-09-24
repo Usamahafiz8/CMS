@@ -43,7 +43,7 @@ function RelationSection<T extends { id: string }>({
   const available = options.filter((option) => !assignedIds.has(option.id));
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+    <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
       <h3 className="mb-3 text-base font-semibold text-slate-900">{title}</h3>
       {items.length === 0 ? (
         <p className="text-sm text-slate-500">{emptyLabel}</p>
@@ -115,7 +115,7 @@ export default function ClassDetailPage() {
         <LoadingSpinner label="Loading class..." />
       ) : (
         <div className="flex flex-col gap-6">
-          <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="max-w-3xl rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
             <ClassForm
               defaultValues={classItem}
               submitLabel="Update Class"

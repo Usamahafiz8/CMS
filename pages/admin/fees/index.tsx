@@ -48,13 +48,13 @@ export default function FeesPage() {
           <p className="text-xs font-medium text-slate-500 sm:text-sm">Unpaid Invoices</p>
           <p className="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">{outstanding.data?.summary.count ?? 0}</p>
         </div>
-        <div className="col-span-2 rounded-lg border border-slate-200 bg-white p-4 sm:col-span-1 sm:p-5">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
           <p className="text-xs font-medium text-slate-500 sm:text-sm">Overdue</p>
           <p className="mt-1 text-xl font-bold text-red-600 sm:text-2xl">{outstanding.data?.summary.overdueCount ?? 0}</p>
         </div>
       </div>
 
-      <div className="mb-6 rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+      <div className="mb-6 rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
         <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-base font-semibold text-slate-900">Fee Structures</h2>
           <button

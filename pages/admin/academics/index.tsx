@@ -95,7 +95,7 @@ export default function AcademicsPage() {
       ) : classStudents.isLoading ? (
         <LoadingSpinner label="Loading students..." />
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
           <div>
             <h2 className="mb-4 text-base font-semibold text-slate-900">Enter Marks</h2>
             <MarksForm

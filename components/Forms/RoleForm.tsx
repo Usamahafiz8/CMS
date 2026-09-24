@@ -52,9 +52,9 @@ export default function RoleForm({
         e.preventDefault();
         onSubmit({ name, description, permissionKeys: Array.from(selected) });
       }}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-3 sm:gap-4"
     >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Role Name</label>
           <input
@@ -78,7 +78,7 @@ export default function RoleForm({
 
       <div>
         <p className={labelClass}>Permissions</p>
-        <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="mt-2 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Object.entries(grouped).map(([module, modulePermissions]) => (
             <div key={module} className="rounded-md border border-slate-200 p-3">
               <p className="mb-2 text-sm font-semibold text-slate-800">{titleCase(module)}</p>

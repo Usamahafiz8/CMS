@@ -38,7 +38,7 @@ export default function ExamDetailPage() {
         <LoadingSpinner label="Loading exam..." />
       ) : (
         <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
             <div>
               <h2 className="text-lg font-semibold text-slate-900">{exam.name}</h2>
               <p className="text-sm text-slate-500">
@@ -72,7 +72,7 @@ export default function ExamDetailPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
             <h3 className="mb-3 text-base font-semibold text-slate-900">Exam Timetable</h3>
             {exam.timetables.length === 0 ? (
               <p className="mb-4 text-sm text-slate-500">No timetable entries yet.</p>
@@ -134,7 +134,7 @@ export default function ExamDetailPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
             <h3 className="mb-3 text-base font-semibold text-slate-900">Invigilators</h3>
             {exam.invigilators.length === 0 ? (
               <p className="mb-4 text-sm text-slate-500">No invigilators assigned yet.</p>

@@ -44,8 +44,8 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
           onClose={() => setIsMenuOpen(false)}
           onOpenMore={() => setIsMenuOpen(true)}
         />
-        <main className="flex-1 p-4 pb-24 sm:p-6 md:p-8 md:pb-8">
-          <h1 className="font-display mb-4 text-xl font-bold text-slate-900 sm:mb-6 sm:text-2xl">{title}</h1>
+        <main className="flex-1 p-4 pb-24 sm:p-6 md:pb-6">
+          <h1 className="font-display mb-4 text-xl font-bold text-slate-900 sm:mb-5 sm:text-2xl">{title}</h1>
           <div className="animate-fade-in-up">{children}</div>
         </main>
       </div>

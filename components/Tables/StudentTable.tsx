@@ -9,7 +9,7 @@ interface StudentTableProps {
 export default function StudentTable({ students, onEdit, onDelete }: StudentTableProps) {
   if (students.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+      <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
         No students found. Add a student to get started.
       </div>
     );
@@ -21,24 +21,24 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Name</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Roll Number</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Guardian</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Phone</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Status</th>
-              <th className="px-4 py-3 text-right font-semibold text-slate-600">Actions</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Name</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Roll Number</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Guardian</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Phone</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Status</th>
+              <th className="px-4 py-2.5 text-right font-semibold text-slate-600">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
             {students.map((student) => (
               <tr key={student.id} className="transition-colors hover:bg-slate-50">
-                <td className="px-4 py-3 font-medium text-slate-900">
+                <td className="px-4 py-2.5 font-medium text-slate-900">
                   {student.firstName} {student.lastName}
                 </td>
-                <td className="px-4 py-3 text-slate-600">{student.rollNumber}</td>
-                <td className="px-4 py-3 text-slate-600">{student.guardianName}</td>
-                <td className="px-4 py-3 text-slate-600">{student.phone ?? "—"}</td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-2.5 text-slate-600">{student.rollNumber}</td>
+                <td className="px-4 py-2.5 text-slate-600">{student.guardianName}</td>
+                <td className="px-4 py-2.5 text-slate-600">{student.phone ?? "—"}</td>
+                <td className="px-4 py-2.5">
                   <span
                     className={`rounded-full px-2 py-1 text-xs font-medium ${
                       student.status === "ACTIVE"
@@ -49,7 +49,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                     {student.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-4 py-2.5 text-right">
                   <button
                     type="button"
                     onClick={() => onEdit(student)}
@@ -71,7 +71,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
         </table>
       </div>
 
-      <div className="flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-col gap-2.5 sm:hidden">
         {students.map((student) => (
           <div key={student.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex items-start justify-between gap-3">
@@ -89,7 +89,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                 {student.status}
               </span>
             </div>
-            <dl className="mt-3 grid grid-cols-2 gap-y-2 border-t border-slate-100 pt-3 text-sm">
+            <dl className="mt-2.5 grid grid-cols-2 gap-y-2 border-t border-slate-100 pt-2.5 text-sm">
               <div>
                 <dt className="text-xs text-slate-400">Guardian</dt>
                 <dd className="text-slate-700">{student.guardianName}</dd>
@@ -99,7 +99,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                 <dd className="text-slate-700">{student.phone ?? "—"}</dd>
               </div>
             </dl>
-            <div className="mt-3 flex gap-2 border-t border-slate-100 pt-3">
+            <div className="mt-2.5 flex gap-2 border-t border-slate-100 pt-2.5">
               <button
                 type="button"
                 onClick={() => onEdit(student)}

@@ -16,10 +16,10 @@ export default function StatCard({ label, value, href }: StatCardProps) {
     text.length > 10 ? "text-lg sm:text-xl" : text.length > 6 ? "text-xl sm:text-2xl lg:text-3xl" : "text-3xl";
 
   const content = (
-    <div className="cms-card-hover flex h-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-lg sm:p-6">
+    <div className="cms-card-hover flex h-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-lg sm:p-5">
       <p className="text-xs font-medium text-slate-500 sm:text-sm">{label}</p>
       <p
-        className={`font-display mt-1.5 truncate leading-tight font-bold text-slate-900 sm:mt-2 ${sizeClass}`}
+        className={`font-display mt-1.5 truncate leading-tight font-bold text-slate-900 ${sizeClass}`}
         title={text}
       >
         {text}

@@ -12,7 +12,7 @@ export default function StudentDashboard() {
   const currentClass = student?.classEnrollments[0]?.class;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3">
         <StatCard label="Roll Number" value={student?.rollNumber ?? "—"} />
         <StatCard label="Class" value={currentClass ? `${currentClass.name} - ${currentClass.section}` : "—"} />

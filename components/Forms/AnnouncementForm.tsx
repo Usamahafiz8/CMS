@@ -40,7 +40,7 @@ export default function AnnouncementForm({ onSubmit, isSubmitting = false }: Ann
   });
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-4">
+    <form onSubmit={submit} className="flex flex-col gap-3 sm:gap-4">
       <div>
         <label className={labelClass}>Title</label>
         <input className={inputClass} {...register("title")} />
@@ -51,7 +51,7 @@ export default function AnnouncementForm({ onSubmit, isSubmitting = false }: Ann
         <textarea rows={4} className={inputClass} {...register("content")} />
         {errors.content && <p className={errorClass}>{errors.content.message}</p>}
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <div>
           <label className={labelClass}>Priority</label>
           <select className={inputClass} {...register("priority")}>

@@ -101,7 +101,7 @@ export default function TimetablePage() {
                 <TimetableTable slots={classTimetable.data ?? []} />
               )}
 
-              <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+              <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="text-base font-semibold text-slate-900">Edit Weekly Timetable</h3>
                   {pendingSlots.length === 0 && (

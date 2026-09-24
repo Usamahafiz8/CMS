@@ -30,7 +30,7 @@ export default function UsersPage() {
 
   return (
     <AdminLayout title="Users">
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+      <div className="mb-3 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-slate-500">Manage accounts and assign roles across the system.</p>
         {can("users.create") && (
           <button

@@ -14,7 +14,7 @@ export default function UserTable({ users, currentUserId, onEdit, onResetPasswor
 
   if (users.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+      <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
         No users found. Add a user to get started.
       </div>
     );
@@ -26,11 +26,11 @@ export default function UserTable({ users, currentUserId, onEdit, onResetPasswor
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Name</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Email</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Role</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Status</th>
-              <th className="px-4 py-3 text-right font-semibold text-slate-600">Actions</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Name</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Email</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Role</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Status</th>
+              <th className="px-4 py-2.5 text-right font-semibold text-slate-600">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
@@ -38,13 +38,13 @@ export default function UserTable({ users, currentUserId, onEdit, onResetPasswor
               const isSelf = user.id === currentUserId;
               return (
                 <tr key={user.id} className="transition-colors hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="px-4 py-2.5 font-medium text-slate-900">
                     {user.firstName} {user.lastName}
                     {isSelf && <span className="ml-2 text-xs text-slate-400">(you)</span>}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{user.email}</td>
-                  <td className="px-4 py-3 text-slate-600">{user.role.name}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-2.5 text-slate-600">{user.email}</td>
+                  <td className="px-4 py-2.5 text-slate-600">{user.role.name}</td>
+                  <td className="px-4 py-2.5">
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${
                         user.status === "ACTIVE" ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"
@@ -53,7 +53,7 @@ export default function UserTable({ users, currentUserId, onEdit, onResetPasswor
                       {user.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-2.5 text-right">
                     {can("users.edit") && (
                       <button
                         type="button"
@@ -89,7 +89,7 @@ export default function UserTable({ users, currentUserId, onEdit, onResetPasswor
         </table>
       </div>
 
-      <div className="flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-col gap-2.5 sm:hidden">
         {users.map((user) => {
           const isSelf = user.id === currentUserId;
           const hasActions = can("users.edit") || can("users.changePassword") || (can("users.delete") && !isSelf);
@@ -111,14 +111,14 @@ export default function UserTable({ users, currentUserId, onEdit, onResetPasswor
                   {user.status}
                 </span>
               </div>
-              <dl className="mt-3 border-t border-slate-100 pt-3 text-sm">
+              <dl className="mt-2.5 border-t border-slate-100 pt-2.5 text-sm">
                 <div>
                   <dt className="text-xs text-slate-400">Role</dt>
                   <dd className="text-slate-700">{user.role.name}</dd>
                 </div>
               </dl>
               {hasActions && (
-                <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-100 pt-3">
+                <div className="mt-2.5 flex flex-wrap gap-2 border-t border-slate-100 pt-2.5">
                   {can("users.edit") && (
                     <button
                       type="button"

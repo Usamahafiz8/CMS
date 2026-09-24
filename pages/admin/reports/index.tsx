@@ -36,8 +36,8 @@ export default function ReportsPage() {
       </div>
 
       {tab === "attendance" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+          <div className="mb-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-base font-semibold text-slate-900">Attendance by Class</h2>
             <button
               type="button"
@@ -56,8 +56,8 @@ export default function ReportsPage() {
       )}
 
       {tab === "academic" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+          <div className="mb-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-base font-semibold text-slate-900">Academic Performance by Subject</h2>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <select
@@ -93,8 +93,8 @@ export default function ReportsPage() {
       )}
 
       {tab === "financial" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+          <div className="mb-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-base font-semibold text-slate-900">Financial Summary</h2>
             <button
               type="button"

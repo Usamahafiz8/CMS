@@ -15,7 +15,7 @@ interface AttendanceTableProps {
 export default function AttendanceTable({ rows }: AttendanceTableProps) {
   if (rows.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+      <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
         No attendance records yet for this range.
       </div>
     );
@@ -27,30 +27,30 @@ export default function AttendanceTable({ rows }: AttendanceTableProps) {
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Student</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Present</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Absent</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Leave</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Attendance %</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Student</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Present</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Absent</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Leave</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Attendance %</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
             {rows.map(({ student, summary }) => (
               <tr key={student.id} className="transition-colors hover:bg-slate-50">
-                <td className="px-4 py-3 font-medium text-slate-900">
+                <td className="px-4 py-2.5 font-medium text-slate-900">
                   {student.firstName} {student.lastName}
                 </td>
-                <td className="px-4 py-3 text-green-700">{summary.present}</td>
-                <td className="px-4 py-3 text-red-700">{summary.absent}</td>
-                <td className="px-4 py-3 text-amber-700">{summary.leave}</td>
-                <td className="px-4 py-3 font-medium text-slate-700">{summary.percentage}%</td>
+                <td className="px-4 py-2.5 text-green-700">{summary.present}</td>
+                <td className="px-4 py-2.5 text-red-700">{summary.absent}</td>
+                <td className="px-4 py-2.5 text-amber-700">{summary.leave}</td>
+                <td className="px-4 py-2.5 font-medium text-slate-700">{summary.percentage}%</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-col gap-2.5 sm:hidden">
         {rows.map(({ student, summary }) => (
           <div key={student.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex items-start justify-between gap-3">
@@ -61,7 +61,7 @@ export default function AttendanceTable({ rows }: AttendanceTableProps) {
                 {summary.percentage}%
               </span>
             </div>
-            <dl className="mt-3 grid grid-cols-3 gap-y-2 border-t border-slate-100 pt-3 text-sm">
+            <dl className="mt-2.5 grid grid-cols-3 gap-y-2 border-t border-slate-100 pt-2.5 text-sm">
               <div>
                 <dt className="text-xs text-slate-400">Present</dt>
                 <dd className="font-medium text-green-700">{summary.present}</dd>

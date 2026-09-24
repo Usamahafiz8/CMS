@@ -23,7 +23,7 @@ export default function ParentChildMarksPage() {
       ) : (parent?.children.length ?? 0) === 0 ? (
         <p className="text-sm text-slate-500">Link a child from your dashboard to view their marks.</p>
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
           <select
             value={studentId}
             onChange={(e) => {

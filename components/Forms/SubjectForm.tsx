@@ -41,7 +41,7 @@ export default function SubjectForm({
   });
 
   return (
-    <form onSubmit={submit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <form onSubmit={submit} className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2">
       <div>
         <label className={labelClass}>Subject Name</label>
         <input className={inputClass} placeholder="Mathematics" {...register("name")} />

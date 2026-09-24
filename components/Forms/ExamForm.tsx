@@ -51,7 +51,7 @@ export default function ExamForm({ classes, subjects, onSubmit, isSubmitting = f
   });
 
   return (
-    <form onSubmit={submit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <form onSubmit={submit} className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div>
         <label className={labelClass}>Exam Name</label>
         <input className={inputClass} placeholder="Midterm Exam" {...register("name")} />
@@ -89,7 +89,7 @@ export default function ExamForm({ classes, subjects, onSubmit, isSubmitting = f
         <input type="date" className={inputClass} {...register("endDate")} />
         {errors.endDate && <p className={errorClass}>{errors.endDate.message}</p>}
       </div>
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 lg:col-span-3">
         <label className={labelClass}>Subjects</label>
         <div className="mt-1 flex flex-wrap gap-2">
           {subjects.map((subject) => (
@@ -109,7 +109,7 @@ export default function ExamForm({ classes, subjects, onSubmit, isSubmitting = f
         </div>
         {subjectError && <p className={errorClass}>{subjectError}</p>}
       </div>
-      <div className="sm:col-span-2 flex justify-end gap-3 pt-2">
+      <div className="sm:col-span-2 flex justify-end gap-3 pt-2 lg:col-span-3">
         <button
           type="submit"
           disabled={isSubmitting}

@@ -51,7 +51,7 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
           <div className="flex justify-center pt-2.5 pb-1 md:hidden">
             <span className="h-1.5 w-10 rounded-full bg-slate-200" />
           </div>
-          <nav className="flex flex-col gap-0.5 p-4">
+          <nav className="grid grid-cols-2 gap-2 p-4 md:flex md:flex-col md:gap-0.5">
             {navItems.map((item) => {
               const isActive =
                 item.href === homeHref
@@ -75,8 +75,8 @@ export default function PortalLayout({ title, role, navItems, children }: Portal
             })}
           </nav>
         </aside>
-        <main className="flex-1 p-4 pb-24 sm:p-6 md:p-8 md:pb-8">
-          <h1 className="font-display mb-4 text-xl font-bold text-slate-900 sm:mb-6 sm:text-2xl">{title}</h1>
+        <main className="flex-1 p-4 pb-24 sm:p-6 md:pb-6">
+          <h1 className="font-display mb-4 text-xl font-bold text-slate-900 sm:mb-5 sm:text-2xl">{title}</h1>
           <div className="animate-fade-in-up">{children}</div>
         </main>
       </div>

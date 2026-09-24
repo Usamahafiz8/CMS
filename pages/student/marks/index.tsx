@@ -20,7 +20,7 @@ export default function StudentMarksPage() {
       {profileLoading || marks.isLoading ? (
         <LoadingSpinner label="Loading marks..." />
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6">
           <div>
             <h2 className="mb-4 text-base font-semibold text-slate-900">All Published Marks</h2>
             <MarksTable marks={marks.data ?? []} />

@@ -41,7 +41,7 @@ export default function StudentForm({
   });
 
   return (
-    <form onSubmit={submit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <form onSubmit={submit} className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div>
         <label className={labelClass}>First Name</label>
         <input className={inputClass} {...register("firstName")} />
@@ -82,12 +82,12 @@ export default function StudentForm({
         <input className={inputClass} {...register("guardianPhone")} />
         {errors.guardianPhone && <p className={errorClass}>{errors.guardianPhone.message}</p>}
       </div>
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 lg:col-span-3">
         <label className={labelClass}>Address</label>
         <input className={inputClass} {...register("address")} />
         {errors.address && <p className={errorClass}>{errors.address.message}</p>}
       </div>
-      <div className="sm:col-span-2 flex justify-end gap-3 pt-2">
+      <div className="sm:col-span-2 flex justify-end gap-3 pt-2 lg:col-span-3">
         <button
           type="submit"
           disabled={isSubmitting}

@@ -11,7 +11,7 @@ interface ClassTableProps {
 export default function ClassTable({ classes, onEdit, onDelete }: ClassTableProps) {
   if (classes.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-slate-300 py-12 text-center text-sm text-slate-500">
+      <div className="rounded-md border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
         No classes found. Add a class to get started.
       </div>
     );
@@ -23,23 +23,23 @@ export default function ClassTable({ classes, onEdit, onDelete }: ClassTableProp
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Name</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Section</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Capacity</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Academic Year</th>
-              <th className="px-4 py-3 text-right font-semibold text-slate-600">Actions</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Name</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Section</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Capacity</th>
+              <th className="px-4 py-2.5 text-left font-semibold text-slate-600">Academic Year</th>
+              <th className="px-4 py-2.5 text-right font-semibold text-slate-600">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
             {classes.map((classItem) => (
               <tr key={classItem.id} className="transition-colors hover:bg-slate-50">
-                <td className="px-4 py-3 font-medium text-slate-900">{classItem.name}</td>
-                <td className="px-4 py-3 text-slate-600">{classItem.section}</td>
-                <td className="px-4 py-3 text-slate-600">
+                <td className="px-4 py-2.5 font-medium text-slate-900">{classItem.name}</td>
+                <td className="px-4 py-2.5 text-slate-600">{classItem.section}</td>
+                <td className="px-4 py-2.5 text-slate-600">
                   {classItem._count.enrollments} / {classItem.capacity}
                 </td>
-                <td className="px-4 py-3 text-slate-600">{classItem.academicYear}</td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-4 py-2.5 text-slate-600">{classItem.academicYear}</td>
+                <td className="px-4 py-2.5 text-right">
                   <button
                     type="button"
                     onClick={() => onEdit(classItem)}
@@ -61,7 +61,7 @@ export default function ClassTable({ classes, onEdit, onDelete }: ClassTableProp
         </table>
       </div>
 
-      <div className="flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-col gap-2.5 sm:hidden">
         {classes.map((classItem) => (
           <div key={classItem.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex items-start justify-between gap-3">
@@ -75,7 +75,7 @@ export default function ClassTable({ classes, onEdit, onDelete }: ClassTableProp
                 {classItem._count.enrollments} / {classItem.capacity}
               </span>
             </div>
-            <div className="mt-3 flex gap-2 border-t border-slate-100 pt-3">
+            <div className="mt-2.5 flex gap-2 border-t border-slate-100 pt-2.5">
               <button
                 type="button"
                 onClick={() => onEdit(classItem)}

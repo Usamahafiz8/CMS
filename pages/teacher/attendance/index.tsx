@@ -65,8 +65,8 @@ export default function TeacherAttendancePage() {
           ) : classStudents.isLoading ? (
             <LoadingSpinner label="Loading students..." />
           ) : (
-            <div className="flex flex-col gap-8">
-              <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+            <div className="flex flex-col gap-6">
+              <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
                 <h2 className="mb-4 text-base font-semibold text-slate-900">Mark Attendance — {date}</h2>
                 <AttendanceForm
                   students={classStudents.data ?? []}
